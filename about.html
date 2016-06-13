@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Introduction | Akkamo Documentation</title>
+        <title>What is Akkamo? | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="This document introduces the Akkamo project and describes its main features. Akkamo is open source project, source code of core Akkamo platform and modules is hosted on github.com/akkamo site.">
+        <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
         
         
@@ -37,8 +37,10 @@
         
     
     
-    <link rel="next" href="./about.html" />
+    <link rel="next" href="./how-it-works/index.html" />
     
+    
+    <link rel="prev" href="./index.html" />
     
 
         
@@ -47,9 +49,9 @@
         
         
     <div class="book"
-        data-level="0"
-        data-chapter-title="Introduction"
-        data-filepath="README.md"
+        data-level="1"
+        data-chapter-title="What is Akkamo?"
+        data-filepath="about.md"
         data-basepath="."
         data-revision="Mon Jun 13 2016 13:24:15 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -67,7 +69,7 @@
 
             
     
-        <li class="chapter active" data-level="0" data-path="index.html">
+        <li class="chapter " data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -80,7 +82,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1" data-path="about.html">
+        <li class="chapter active" data-level="1" data-path="about.html">
             
                 
                     <a href="./about.html">
@@ -272,8 +274,11 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="akkamo-documentation">Akkamo Documentation</h1>
-<p>This document introduces the <em>Akkamo</em> project and describes its main features. <em>Akkamo</em> is open source project, source code of core <em>Akkamo</em> platform and modules is hosted on <a href="https://github.com/akkamo/" target="_blank">github.com/akkamo</a> site.</p>
+                        <h1 id="what-is-akkamo">What is Akkamo?</h1>
+<p>Main goal of the <em>Akkamo</em> project is to make modularization of your Scala applications much easier. Its based on runtime assembly of provided modules, built on top of the <a href="http://akka.io" target="_blank">Akka</a> actor platform.</p>
+<p><em>Akkamo</em> platform allows to decompose your monolithic application into the set of modules. <em>Akkamo</em> modules can work independently, or can define dependencies on another modules and create logic blocks which works together.</p>
+<p>Developing modular applications with <em>Akkamo</em> is piece of cake for the developer. The whole platform is designed to be as simple as possible, yet powerful, and uses extensively existing tools well-known for developers, such as <a href="http://www.scala-sbt.org" target="_blank">SBT</a> for dependency and build management, Java&apos;s <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html" target="_blank">Service loader</a> mechanism for module discovery on classpath during <em>Akkamo</em> startup, and the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library for application-wide configuration. Also, <em>Akkamo</em>&apos;s SBT plugin provides hot-reload functionality on code change, so developing the application is even easier and faster.</p>
+<p>When your application is ready for production deployment, the SBT plugin <a href="https://github.com/sbt/sbt-native-packager" target="_blank">sbt-native-packager</a> allows you to build your application as a native package (zip file with startup scripts).</p>
 
                     
                     </section>
@@ -284,8 +289,10 @@
         </div>
 
         
+        <a href="./index.html" class="navigation navigation-prev " aria-label="Previous page: Introduction"><i class="fa fa-angle-left"></i></a>
         
-        <a href="./about.html" class="navigation navigation-next navigation-unique" aria-label="Next page: What is Akkamo?"><i class="fa fa-angle-right"></i></a>
+        
+        <a href="./how-it-works/index.html" class="navigation navigation-next " aria-label="Next page: How it works?"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
