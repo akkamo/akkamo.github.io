@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>ReactiveMongo module · GitBook</title>
+        <title>Kafka module · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -65,8 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="log-module.html" />
     
-    <link rel="prev" href="persistent-config-module.md" />
+    
+    <link rel="prev" href="config-module.html" />
     
 
     </head>
@@ -232,7 +234,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.4" data-path="kafka-module.html">
+        <li class="chapter active" data-level="1.4.4" data-path="kafka-module.html">
             
                 <a href="kafka-module.html">
             
@@ -271,7 +273,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.7" data-path="reactivemongo-module.html">
+        <li class="chapter " data-level="1.4.7" data-path="reactivemongo-module.html">
             
                 <a href="reactivemongo-module.html">
             
@@ -319,7 +321,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >ReactiveMongo module</a>
+        <a href=".." >Kafka module</a>
     </h1>
 </div>
 
@@ -334,111 +336,104 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="reactivemongo-module">ReactiveMongo module</h1>
-<p>This module provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database,
-<a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver.</p>
+                                <h1 id="kafka-module">Kafka module</h1>
+<p>This module provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, a high throughput
+distributed messaging system.</p>
 <h2 id="module-configuration">Module configuration</h2>
-<p>This module requires its configuration under the <code>akkamo.reactiveMongo</code> namespace. Each
-configuration block under this namespace represents the configuration of single MongoDB connection
-and will be registered into the <em>Akkamo</em> context as the instance of <code>ReactiveMongoApi</code> trait.</p>
+<p>This module requires its configuration under the <code>akkamo.kafka</code> namespace. Each configuration block
+under this namespace represents the configuration of single Kafka connection and will register into
+the <em>Akkamo context</em> instance of
+<a href="https://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html" target="_blank">KafkaProducer</a>
+and/or
+<a href="https://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html" target="_blank">KafkaConsumer</a>
+, depending on the module configuration.</p>
 <h3 id="configuration-keys">Configuration keys</h3>
 <ul>
-<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the connection will be
-registered to the <em>Akkamo</em> context</li>
-<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the connection will be available for injection as
-<em>default</em> (Please note that only one configured connection can be specified as <em>default</em>)</li>
-<li><code>uri</code> - MongoDB URI (see
- <a href="https://docs.mongodb.com/manual/reference/connection-string/" target="_blank">MongoDB documentation</a> for more
- details)</li>
-<li><code>mongo-async-driver</code> - configuration subtree of the <em>ReactiveMongo</em> itself, see
-<a href="http://reactivemongo.org" target="_blank">official documentation</a> for more details</li>
+<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the Kafka
+producer/consumer will be registered to the <em>Akkamo</em> context</li>
+<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the Kafka producer/consumer will be available for
+injection as <em>default</em> (Please note that only one configured connection can be specified as
+<em>default</em>)</li>
+<li><code>properties</code> - path to the Kafka <em>properties file</em> (see
+<a href="http://kafka.apache.org/documentation.html#configuration" target="_blank">official documentation</a> for more info)</li>
+<li><code>producer</code> <em>(optional)</em> - whether the Kafka producer should be registered into the
+<em>Akkamo context</em> for the particular configuration (default is <code>false</code>)</li>
+<li><code>consumer</code> <em>(optional)</em> - whether the Kafka consumer should be registered into the
+<em>Akkamo context</em> for the particular configuration (default is <code>false</code>)</li>
 </ul>
-<p>Example, fully working configuration is shown below:</p>
-<pre><code>akkamo.reactiveMongo {
-  conn1 {   // MongoDB connection with name &apos;conn1&apos;
-    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]    // aliases for the connection &apos;conn1&apos;
-    default = true  // marks that this connection is the default one
-    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
-    mongo-async-driver {  // configuration of the ReactiveMongo&apos;s underlying Akka system
-      akka {
-        loglevel = WARNING
-      }
-    }
-  }
-
-  conn2 {   // MongoDB connection with name &apos;conn2&apos;
-    aliases = [&quot;alias3&quot;]    // aliases for the connection &apos;conn1&apos;
-    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
-    mongo-async-driver {  // configuration of the ReactiveMongo&apos;s underlying Akka system
-      akka {
-        loglevel = WARNING
-      }
-    }
+<p>Example of fully working configuration is shown below:</p>
+<pre><code>akkamo.kafka = {
+  // complete configuration with several name aliases
+  name1 = {
+    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]
+    properties = &quot;name1.properties&quot; // path to property file
+    producer = true
+    consumer = true
+  },
+  // configuration registered as default (only one instance is allowed)
+  name2 = {
+    default = true
+    properties = &quot;name2.properties&quot;
+    consumer = true
   }
 }
-</code></pre><p>The above configuration creates two MongoDB connections, one with name <em>conn1</em>, aliases <em>alias1</em> and
-<em>alias2</em> and also marked as the <em>default</em> connection, second with name <em>conn2</em> and alias <em>alias3</em>.</p>
-<blockquote>
-<p>Please note that if the configuration is incorrect or MongoDB is not running at time of module
-initialization, the entire Akkamo initialization process will be interrupted
-(<em>fail-fast</em> principle).</p>
-</blockquote>
+</code></pre><p>The above configuration creates two Kafka configurations. First configuration causes that Kafka
+producer and consumer will be registered into the <em>Akkamo context</em> under the name <code>name1</code> and
+aliases <code>alias1</code> and <code>alias2</code>, Kafka configuration itself will be loaded from properties file called
+<code>name1.properties</code>. Second configuration causes that only Kafka consumer will be registered into the
+<em>Akkamo</em> context and will be available for injection as <em>default</em> service (e.g. without need to
+specify any <em>key</em>) and under its name <code>name2</code>, Kafka configuration itself will be loaded from
+properties file called <code>name2.properties</code></p>
 <h2 id="how-to-use-in-your-module">How to use in your module</h2>
-<p>Each configured connection is registered into the <em>Akkamo</em> context and available for injection,
-using the following rules:</p>
+<p>Each configured connection registers into the <em>Akkamo context</em> either the Kafka producer or consumer
+or eventually both of them, and those are available for injection using the following rules:</p>
 <ul>
-<li><strong>inject by the configuration name</strong><br>Selected connection can be injected using its configuration name, e.g.
-<code>ctx.inject[ReactiveMongoApi](&quot;conn1&quot;)</code></li>
-<li><strong>inject the default connection</strong><br>If any configured connection has set the <code>default = true</code> property, it will be considered as
-<em>default</em> connection and can be injected without specifying the key, e.g.
-<code>ctx.inject[ReactiveMongoApi]</code>. Please note that only one configured connection can be specified
-as <em>default</em>.</li>
-<li><p><strong>inject by the name alias</strong><br>Besides the configuration name, each configured connection can be identified by one or more
-<em>alias name</em>. Such <em>alias name</em> can be used to inject the selected connection, e.g.
-<code>ctx.inject[ReactiveMongoApi](&quot;alias3&quot;)</code>.</p>
-<p>Below is example code of very simple module, injecting actor systems configured by configuration
-example shown above.</p>
-</li>
+<li><strong>inject by the configuration name</strong><br>Selected Kafka producer/consumer can be injected using its configuration name, e.g.
+<code>ctx.inject[KafkaProducer[String, String]](&quot;name1&quot;)</code></li>
+<li><strong>inject the default connection</strong><br>If any configuration has set the <code>default = true</code> property, it will be considered as
+<em>default</em> and can be injected without specifying the key, e.g.
+<code>ctx.inject[KafkaProducer[String, String]]</code>. Please note that only one configuration can be
+marked as <em>default</em>.</li>
+<li><strong>inject by the name alias</strong><br>Besides the configuration name, each configured Kafka producer/consumer can be identified by one
+or more <em>alias name</em>. Such <em>alias name</em> can be used to inject the selected connection, e.g.
+<code>ctx.inject[KafkaConsumer[String, String]](&quot;alias2&quot;)</code>.</li>
 </ul>
+<p>Below is example code of very simple module, injecting Kafka producer/consumer configured by
+configuration example shown above.</p>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Module</span> <span class="hljs-keyword">with</span> <span class="hljs-title">Initializable</span> </span>{
   <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>(ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
-    <span class="hljs-comment">// injects the connection marked as default (&apos;conn1&apos; in this case)</span>
-    <span class="hljs-keyword">val</span> conn1: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>]
+    <span class="hljs-comment">// injects the Kafka consumer marked as default (&apos;name2&apos; configuration in this case)</span>
+    <span class="hljs-keyword">val</span> consumerD: <span class="hljs-type">Option</span>[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]] =
+      ctx.inject[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]]
 
     <span class="hljs-comment">// same as above, with explicitly specified name</span>
-    <span class="hljs-keyword">val</span> conn1_1: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>](<span class="hljs-string">&quot;conn1&quot;</span>)
+    <span class="hljs-keyword">val</span> consumerD_1: <span class="hljs-type">Option</span>[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]] =
+      ctx.inject[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]](<span class="hljs-string">&quot;name2&quot;</span>)
 
-    <span class="hljs-comment">// injects the connection &apos;conn2&apos;, which has defined the alias &apos;alias3&apos;</span>
-    <span class="hljs-keyword">val</span> conn2: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>](<span class="hljs-string">&quot;alias3&quot;</span>)
+    <span class="hljs-comment">// injects the Kafka consumer registered with name &apos;name1&apos;</span>
+    <span class="hljs-keyword">val</span> consumer: <span class="hljs-type">Option</span>[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]] =
+      ctx.inject[<span class="hljs-type">KafkaConsumer</span>[<span class="hljs-type">String</span>, <span class="hljs-type">String</span>]](<span class="hljs-string">&quot;alias1&quot;</span>)
 
     <span class="hljs-comment">// ... rest of method code ...</span>
 
   }
 
-  <span class="hljs-comment">// don&apos;t forget to add ReactiveMongo module dependency to your module</span>
+  <span class="hljs-comment">// don&apos;t forget to add Kafka module dependency to your module</span>
   <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span></span>(dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
-    dependencies.&amp;&amp;[<span class="hljs-type">ReactiveMongoModule</span>]
+    dependencies.&amp;&amp;[<span class="hljs-type">KafkaModule</span>]
 }
 </code></pre>
 <h2 id="provided-apis">Provided APIs</h2>
-<p>This module registers into the <em>Akkamo</em> context following types:</p>
+<p>This module registers into the <em>Akkamo</em> context following services:</p>
 <ul>
-<li><code>ReactiveMongoApi</code><br>For each configured MongoDB connection, instance of this trait will be registered into the
-<em>Akkamo</em> context. This trait provides following fields:<ul>
-<li><code>driver: reactivemongo.api.MongoDriver</code> - reference to the <em>ReactiveMongo</em> driver for the
-configured connection (see
-<a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.MongoDriver" target="_blank">Scaladoc</a>)</li>
-<li><code>connection: reactivemongo.api.MongoConnection</code> - reference to the <em>ReactiveMongo</em> connection
-itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.MongoConnection" target="_blank">Scaladoc</a>)</li>
-<li><code>db: reactivemongo.api.DB</code> - reference to the <em>ReactiveMongo</em> database (see
-<a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.DB" target="_blank">Scaladoc</a>)</li>
-</ul>
-</li>
+<li><code>KafkaProducer</code> - see <a href="https://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html" target="_blank">official Javadoc</a>
+for more details</li>
+<li><code>KafkaConsumer</code> - see <a href="https://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html" target="_blank">official Javadoc</a>
+for more details</li>
 </ul>
 <h2 id="module-dependencies">Module dependencies</h2>
 <p>This module depends on following core modules:</p>
 <ul>
-<li><a href="akka-module.html">Akka module</a></li>
 <li><a href="config-module.html">Config module</a></li>
 <li><a href="log-module.html">Log module</a></li>
 </ul>
@@ -469,10 +464,14 @@ itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.a
 
             
                 
-                <a href="persistent-config-module.md" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Persistent config module">
+                <a href="config-module.html" class="navigation navigation-prev " aria-label="Previous page: Config module">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="log-module.html" class="navigation navigation-next " aria-label="Next page: Log module">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -481,7 +480,7 @@ itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"ReactiveMongo module","level":"1.4.7","depth":2,"previous":{"title":"Persistent config module","level":"1.4.6","depth":2,"path":"modules/persistent-config-module.md","ref":"modules/persistent-config-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/reactivemongo-module.md","mtime":"2016-07-15T09:59:14.721Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Kafka module","level":"1.4.4","depth":2,"next":{"title":"Log module","level":"1.4.5","depth":2,"path":"modules/log-module.md","ref":"modules/log-module.md","articles":[]},"previous":{"title":"Config module","level":"1.4.3","depth":2,"path":"modules/config-module.md","ref":"modules/config-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/kafka-module.md","mtime":"2016-07-15T12:48:21.861Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

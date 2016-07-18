@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>ReactiveMongo module · GitBook</title>
+        <title>Akka module · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -65,8 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="akka-http-module.md" />
     
-    <link rel="prev" href="persistent-config-module.md" />
+    
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -193,7 +195,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="akka-module.html">
+        <li class="chapter active" data-level="1.4.1" data-path="akka-module.html">
             
                 <a href="akka-module.html">
             
@@ -271,7 +273,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.7" data-path="reactivemongo-module.html">
+        <li class="chapter " data-level="1.4.7" data-path="reactivemongo-module.html">
             
                 <a href="reactivemongo-module.html">
             
@@ -319,7 +321,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >ReactiveMongo module</a>
+        <a href=".." >Akka module</a>
     </h1>
 </div>
 
@@ -334,111 +336,92 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="reactivemongo-module">ReactiveMongo module</h1>
-<p>This module provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database,
-<a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver.</p>
+                                <h1 id="akka-module">Akka module</h1>
+<p>This module provides simple way to configure and run one or more <a href="https://akka.io" target="_blank">Akka</a> actor
+systems.</p>
 <h2 id="module-configuration">Module configuration</h2>
-<p>This module requires its configuration under the <code>akkamo.reactiveMongo</code> namespace. Each
-configuration block under this namespace represents the configuration of single MongoDB connection
-and will be registered into the <em>Akkamo</em> context as the instance of <code>ReactiveMongoApi</code> trait.</p>
+<p>This module requires its configuration to be available under the <code>akkamo.akka</code> namespace. The module
+configuration is as simple as possible and in fact it just wraps one or <em>Akka</em> configurations for
+one or more actor systems, with additional information about how such actor system will be
+registered into the <em>Akkamo</em> context.</p>
+<p>Each configuration block under the <code>akkamo.akka</code> represents the configuration of single <em>Akka</em> actor
+system. For each configuration, instance of
+<a href="http://doc.akka.io/api/akka/current/#akka.actor.ActorSystem" target="_blank">ActorSystem</a> will be registered into
+the <em>Akkamo</em> context  and available for injection.</p>
 <h3 id="configuration-keys">Configuration keys</h3>
 <ul>
-<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the connection will be
+<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the actor system will be
 registered to the <em>Akkamo</em> context</li>
-<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the connection will be available for injection as
-<em>default</em> (Please note that only one configured connection can be specified as <em>default</em>)</li>
-<li><code>uri</code> - MongoDB URI (see
- <a href="https://docs.mongodb.com/manual/reference/connection-string/" target="_blank">MongoDB documentation</a> for more
- details)</li>
-<li><code>mongo-async-driver</code> - configuration subtree of the <em>ReactiveMongo</em> itself, see
-<a href="http://reactivemongo.org" target="_blank">official documentation</a> for more details</li>
+<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the actor system will be available for injection as
+<em>default</em> (Please note that only one configured actor system can be specified as <em>default</em>)</li>
+<li><code>akka</code> - configuration subtree of the <em>Akka</em> itself, see
+ <a href="http://doc.akka.io/docs/akka/current/general/configuration.html#Custom_application_conf" target="_blank">official documentation</a>
+ for more details</li>
 </ul>
-<p>Example, fully working configuration is shown below:</p>
-<pre><code>akkamo.reactiveMongo {
-  conn1 {   // MongoDB connection with name &apos;conn1&apos;
-    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]    // aliases for the connection &apos;conn1&apos;
-    default = true  // marks that this connection is the default one
-    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
-    mongo-async-driver {  // configuration of the ReactiveMongo&apos;s underlying Akka system
-      akka {
-        loglevel = WARNING
-      }
+<p>Example of module configuration:</p>
+<pre><code>akkamo.akka {
+  // one block with akka configuration contains several aliases with the name name
+  someActorSystem1 {
+    aliases = [&quot;as1&quot;, &quot;system1&quot;]
+    default = true
+    // standard akka attributes for example:
+    akka {
+      // Akka configuration here
     }
   }
-
-  conn2 {   // MongoDB connection with name &apos;conn2&apos;
-    aliases = [&quot;alias3&quot;]    // aliases for the connection &apos;conn1&apos;
-    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
-    mongo-async-driver {  // configuration of the ReactiveMongo&apos;s underlying Akka system
-      akka {
-        loglevel = WARNING
-      }
+  someActorSystem2 {
+    aliases = [&quot;as2&quot;, &quot;system2&quot;]
+    // standard akka attributes for example:
+    akka{
+      //  Akka configuration here
     }
   }
 }
-</code></pre><p>The above configuration creates two MongoDB connections, one with name <em>conn1</em>, aliases <em>alias1</em> and
-<em>alias2</em> and also marked as the <em>default</em> connection, second with name <em>conn2</em> and alias <em>alias3</em>.</p>
-<blockquote>
-<p>Please note that if the configuration is incorrect or MongoDB is not running at time of module
-initialization, the entire Akkamo initialization process will be interrupted
-(<em>fail-fast</em> principle).</p>
-</blockquote>
-<h2 id="how-to-use-in-your-module">How to use in your module</h2>
-<p>Each configured connection is registered into the <em>Akkamo</em> context and available for injection,
+</code></pre><h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>Each configured actor system is registered into the <em>Akkamo</em> context and available for injection,
 using the following rules:</p>
 <ul>
-<li><strong>inject by the configuration name</strong><br>Selected connection can be injected using its configuration name, e.g.
-<code>ctx.inject[ReactiveMongoApi](&quot;conn1&quot;)</code></li>
-<li><strong>inject the default connection</strong><br>If any configured connection has set the <code>default = true</code> property, it will be considered as
-<em>default</em> connection and can be injected without specifying the key, e.g.
-<code>ctx.inject[ReactiveMongoApi]</code>. Please note that only one configured connection can be specified
-as <em>default</em>.</li>
-<li><p><strong>inject by the name alias</strong><br>Besides the configuration name, each configured connection can be identified by one or more
-<em>alias name</em>. Such <em>alias name</em> can be used to inject the selected connection, e.g.
-<code>ctx.inject[ReactiveMongoApi](&quot;alias3&quot;)</code>.</p>
+<li><strong>inject by the configuration name</strong><br>Selected actor system can be injected using its configuration name, e.g.
+<code>ctx.inject[ActorSystem](&quot;someActorSystem1&quot;)</code></li>
+<li><strong>inject the default actor system</strong><br>If any configured actor system has set the <code>default = true</code> property, it will be considered as
+<em>default</em> actor system and can be injected without specifying the key, e.g.
+<code>ctx.inject[ActorSystem]</code>. Please note that only one configured actor system can be specified as
+<em>default</em>.</li>
+<li><strong>inject by the name alias</strong><br>Besides the configuration name, each configured actor system can be identified by one or more
+<em>alias name</em>. Such <em>alias name</em> can be used to inject the selected actor system, e.g.
+<code>ctx.inject[ActorSystem](&quot;as1&quot;)</code>.</li>
+</ul>
 <p>Below is example code of very simple module, injecting actor systems configured by configuration
 example shown above.</p>
-</li>
-</ul>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Module</span> <span class="hljs-keyword">with</span> <span class="hljs-title">Initializable</span> </span>{
   <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>(ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
-    <span class="hljs-comment">// injects the connection marked as default (&apos;conn1&apos; in this case)</span>
-    <span class="hljs-keyword">val</span> conn1: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>]
+    <span class="hljs-comment">// injects the actor system marked as default (&apos;someActorSystem1&apos; in this case)</span>
+    <span class="hljs-keyword">val</span> as1: <span class="hljs-type">Option</span>[<span class="hljs-type">ActorSystem</span>] = ctx.inject[<span class="hljs-type">ActorSystem</span>]
 
     <span class="hljs-comment">// same as above, with explicitly specified name</span>
-    <span class="hljs-keyword">val</span> conn1_1: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>](<span class="hljs-string">&quot;conn1&quot;</span>)
+    <span class="hljs-keyword">val</span> as11: <span class="hljs-type">Option</span>[<span class="hljs-type">ActorSystem</span>] = ctx.inject[<span class="hljs-type">ActorSystem</span>](<span class="hljs-string">&quot;someActorSystem1&quot;</span>)
 
-    <span class="hljs-comment">// injects the connection &apos;conn2&apos;, which has defined the alias &apos;alias3&apos;</span>
-    <span class="hljs-keyword">val</span> conn2: <span class="hljs-type">Option</span>[<span class="hljs-type">ReactiveMongoApi</span>] = ctx.inject[<span class="hljs-type">ReactiveMongoApi</span>](<span class="hljs-string">&quot;alias3&quot;</span>)
+    <span class="hljs-comment">// injects the actor system &apos;someActorSystem2&apos;, which has defined the alias &apos;as2&apos;</span>
+    <span class="hljs-keyword">val</span> as2: <span class="hljs-type">Option</span>[<span class="hljs-type">ActorSystem</span>] = ctx.inject[<span class="hljs-type">ActorSystem</span>](<span class="hljs-string">&quot;as2&quot;</span>)
 
     <span class="hljs-comment">// ... rest of method code ...</span>
 
   }
 
-  <span class="hljs-comment">// don&apos;t forget to add ReactiveMongo module dependency to your module</span>
+  <span class="hljs-comment">// don&apos;t forget to add Akka module dependency to your module</span>
   <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span></span>(dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
-    dependencies.&amp;&amp;[<span class="hljs-type">ReactiveMongoModule</span>]
+    dependencies.&amp;&amp;[<span class="hljs-type">AkkaModule</span>]
 }
 </code></pre>
 <h2 id="provided-apis">Provided APIs</h2>
 <p>This module registers into the <em>Akkamo</em> context following types:</p>
 <ul>
-<li><code>ReactiveMongoApi</code><br>For each configured MongoDB connection, instance of this trait will be registered into the
-<em>Akkamo</em> context. This trait provides following fields:<ul>
-<li><code>driver: reactivemongo.api.MongoDriver</code> - reference to the <em>ReactiveMongo</em> driver for the
-configured connection (see
-<a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.MongoDriver" target="_blank">Scaladoc</a>)</li>
-<li><code>connection: reactivemongo.api.MongoConnection</code> - reference to the <em>ReactiveMongo</em> connection
-itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.MongoConnection" target="_blank">Scaladoc</a>)</li>
-<li><code>db: reactivemongo.api.DB</code> - reference to the <em>ReactiveMongo</em> database (see
-<a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.api.DB" target="_blank">Scaladoc</a>)</li>
-</ul>
-</li>
+<li><a href="http://doc.akka.io/api/akka/current/#akka.actor.ActorSystem" target="_blank">ActorSystem</a> for each configured
+actor system, available for injection under the above specified rules</li>
 </ul>
 <h2 id="module-dependencies">Module dependencies</h2>
 <p>This module depends on following core modules:</p>
 <ul>
-<li><a href="akka-module.html">Akka module</a></li>
 <li><a href="config-module.html">Config module</a></li>
 <li><a href="log-module.html">Log module</a></li>
 </ul>
@@ -469,10 +452,14 @@ itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.a
 
             
                 
-                <a href="persistent-config-module.md" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Persistent config module">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Core modules">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="akka-http-module.md" class="navigation navigation-next " aria-label="Next page: Akka HTTP module">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -481,7 +468,7 @@ itself (see <a href="http://reactivemongo.org/releases/0.11/api/#reactivemongo.a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"ReactiveMongo module","level":"1.4.7","depth":2,"previous":{"title":"Persistent config module","level":"1.4.6","depth":2,"path":"modules/persistent-config-module.md","ref":"modules/persistent-config-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/reactivemongo-module.md","mtime":"2016-07-15T09:59:14.721Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Akka module","level":"1.4.1","depth":2,"next":{"title":"Akka HTTP module","level":"1.4.2","depth":2,"path":"modules/akka-http-module.md","ref":"modules/akka-http-module.md","articles":[]},"previous":{"title":"Core modules","level":"1.4","depth":1,"path":"modules/index.md","ref":"modules/index.md","articles":[{"title":"Akka module","level":"1.4.1","depth":2,"path":"modules/akka-module.md","ref":"modules/akka-module.md","articles":[]},{"title":"Akka HTTP module","level":"1.4.2","depth":2,"path":"modules/akka-http-module.md","ref":"modules/akka-http-module.md","articles":[]},{"title":"Config module","level":"1.4.3","depth":2,"path":"modules/config-module.md","ref":"modules/config-module.md","articles":[]},{"title":"Kafka module","level":"1.4.4","depth":2,"path":"modules/kafka-module.md","ref":"modules/kafka-module.md","articles":[]},{"title":"Log module","level":"1.4.5","depth":2,"path":"modules/log-module.md","ref":"modules/log-module.md","articles":[]},{"title":"Persistent config module","level":"1.4.6","depth":2,"path":"modules/persistent-config-module.md","ref":"modules/persistent-config-module.md","articles":[]},{"title":"ReactiveMongo module","level":"1.4.7","depth":2,"path":"modules/reactivemongo-module.md","ref":"modules/reactivemongo-module.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/akka-module.md","mtime":"2016-07-15T09:59:14.717Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

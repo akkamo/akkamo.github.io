@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Akkamo Module · GitBook</title>
+        <title>Config module · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="context.html" />
+    <link rel="next" href="kafka-module.html" />
     
     
-    <link rel="prev" href="lifecycle.html" />
+    <link rel="prev" href="akka-http-module.md" />
     
 
     </head>
@@ -123,9 +123,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="./">
+        <li class="chapter " data-level="1.3" data-path="../how-it-works/">
             
-                <a href="./">
+                <a href="../how-it-works/">
             
                     
                     How it works?
@@ -137,9 +137,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="lifecycle.html">
+        <li class="chapter " data-level="1.3.1" data-path="../how-it-works/lifecycle.html">
             
-                <a href="lifecycle.html">
+                <a href="../how-it-works/lifecycle.html">
             
                     
                     Akkamo Lifecycle
@@ -150,9 +150,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.2" data-path="module.html">
+        <li class="chapter " data-level="1.3.2" data-path="../how-it-works/module.html">
             
-                <a href="module.html">
+                <a href="../how-it-works/module.html">
             
                     
                     Akkamo Module
@@ -163,9 +163,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.3" data-path="context.html">
+        <li class="chapter " data-level="1.3.3" data-path="../how-it-works/context.html">
             
-                <a href="context.html">
+                <a href="../how-it-works/context.html">
             
                     
                     Akkamo Context
@@ -181,9 +181,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="../modules/">
+        <li class="chapter " data-level="1.4" data-path="./">
             
-                <a href="../modules/">
+                <a href="./">
             
                     
                     Core modules
@@ -195,9 +195,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="../modules/akka-module.html">
+        <li class="chapter " data-level="1.4.1" data-path="akka-module.html">
             
-                <a href="../modules/akka-module.html">
+                <a href="akka-module.html">
             
                     
                     Akka module
@@ -208,7 +208,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="../modules/akka-http-module.md">
+        <li class="chapter " data-level="1.4.2" data-path="akka-http-module.md">
             
                 <span>
             
@@ -221,9 +221,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="../modules/config-module.html">
+        <li class="chapter active" data-level="1.4.3" data-path="config-module.html">
             
-                <a href="../modules/config-module.html">
+                <a href="config-module.html">
             
                     
                     Config module
@@ -234,9 +234,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.4" data-path="../modules/kafka-module.html">
+        <li class="chapter " data-level="1.4.4" data-path="kafka-module.html">
             
-                <a href="../modules/kafka-module.html">
+                <a href="kafka-module.html">
             
                     
                     Kafka module
@@ -247,9 +247,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.5" data-path="../modules/log-module.html">
+        <li class="chapter " data-level="1.4.5" data-path="log-module.html">
             
-                <a href="../modules/log-module.html">
+                <a href="log-module.html">
             
                     
                     Log module
@@ -260,7 +260,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="../modules/persistent-config-module.md">
+        <li class="chapter " data-level="1.4.6" data-path="persistent-config-module.md">
             
                 <span>
             
@@ -273,9 +273,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.7" data-path="../modules/reactivemongo-module.html">
+        <li class="chapter " data-level="1.4.7" data-path="reactivemongo-module.html">
             
-                <a href="../modules/reactivemongo-module.html">
+                <a href="reactivemongo-module.html">
             
                     
                     ReactiveMongo module
@@ -321,7 +321,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Akkamo Module</a>
+        <a href=".." >Config module</a>
     </h1>
 </div>
 
@@ -336,9 +336,28 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="akkamo-module">Akkamo Module</h1>
-<p><em>Akkamo</em> module is the cornerstone of each modular application based on this platform. Module is nothing more than an old-good Scala class, implementing appropriate <em>traits</em> and their methods.
-Each module is represented by the class implementing at least <code>eu.akkamo.Module</code> trait. For module lookup during <em>Akkamo</em> startup, Java&apos;s <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html" target="_blank">ServiceLoader</a> mechanism is used, therefore for each <em>Akkamo</em> module a new line with <em>fully qualified domain name</em> of module&apos;s class must be added to the <code>eu.akkamo.Module</code> file located in the <code>META-INF/services/</code> directory of module&apos;s JAR file.</p>
+                                <h1 id="config-module">Config module</h1>
+<p>This module provides configuration support, using the standard
+<a href="https://github.com/typesafehub/config" target="_blank">Typesafe Config</a> library.</p>
+<h1 id="module-configuration">Module configuration</h1>
+<p>Module does not have a configuration.</p>
+<h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>This module registers <code>cpm.typesafe.Config</code> instance into the <em>Akkamo context</em>.</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Module</span> <span class="hljs-keyword">with</span> <span class="hljs-title">Initializable</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initializable</span></span>(ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// injects the configuration</span>
+    <span class="hljs-keyword">val</span> config: <span class="hljs-type">Config</span> = ctx.get[<span class="hljs-type">Config</span>]
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add Config module dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span></span>(dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">ConfigModule</span>]
+}
+</code></pre>
+<h2 id="provided-apis">Provided APIs</h2>
+<p>For more information visit Config definition in <a href="https://github.com/typesafehub/config" target="_blank">Typesafe Config</a> library.</p>
+<h2 id="module-dependencies">Module dependencies</h2>
+<p>Module does not have any dependencies.</p>
 
                                 
                                 </section>
@@ -366,12 +385,12 @@ Each module is represented by the class implementing at least <code>eu.akkamo.Mo
 
             
                 
-                <a href="lifecycle.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Lifecycle">
+                <a href="akka-http-module.md" class="navigation navigation-prev " aria-label="Previous page: Akka HTTP module">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="context.html" class="navigation navigation-next " aria-label="Next page: Akkamo Context">
+                <a href="kafka-module.html" class="navigation navigation-next " aria-label="Next page: Kafka module">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -382,7 +401,7 @@ Each module is represented by the class implementing at least <code>eu.akkamo.Mo
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Akkamo Module","level":"1.3.2","depth":2,"next":{"title":"Akkamo Context","level":"1.3.3","depth":2,"path":"how-it-works/context.md","ref":"how-it-works/context.md","articles":[]},"previous":{"title":"Akkamo Lifecycle","level":"1.3.1","depth":2,"path":"how-it-works/lifecycle.md","ref":"how-it-works/lifecycle.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"how-it-works/module.md","mtime":"2016-07-13T12:44:31.446Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Config module","level":"1.4.3","depth":2,"next":{"title":"Kafka module","level":"1.4.4","depth":2,"path":"modules/kafka-module.md","ref":"modules/kafka-module.md","articles":[]},"previous":{"title":"Akka HTTP module","level":"1.4.2","depth":2,"path":"modules/akka-http-module.md","ref":"modules/akka-http-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","mathjax-beta","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"mathjax-beta":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/config-module.md","mtime":"2016-07-15T13:44:56.449Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-07-18T08:20:43.637Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
