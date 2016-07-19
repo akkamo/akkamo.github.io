@@ -1,0 +1,157 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>mongo - eu.akkamo.mongo</title>
+          <meta name="description" content="mongo - eu.akkamo.mongo" />
+          <meta name="keywords" content="mongo eu.akkamo.mongo" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'eu.akkamo.mongo.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="eu">eu</a>.<a href="../package.html" class="extype" name="eu.akkamo">akkamo</a></p>
+        <h1>mongo</h1><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mongo</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="eu.akkamo.mongo.ReactiveMongoApi" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ReactiveMongoApiextendsAnyRef"></a>
+      <a id="ReactiveMongoApi:ReactiveMongoApi"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ReactiveMongoApi.html"><span class="name">ReactiveMongoApi</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.package@ReactiveMongoApiextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">For each configured <i>ReactiveMongo</i> connection, the instance of this trait is registered into
+the <i>Akkamo</i> context and provides API for accessing the connection.</p>
+    </li><li name="eu.akkamo.mongo.ReactiveMongoModule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ReactiveMongoModuleextendsModulewithInitializablewithDisposable"></a>
+      <a id="ReactiveMongoModule:ReactiveMongoModule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ReactiveMongoModule.html"><span class="name">ReactiveMongoModule</span></a><span class="result"> extends <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a> with <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a> with <a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.package@ReactiveMongoModuleextendsModulewithInitializablewithDisposable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><div class="fullcomment"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><h3> Example configuration </h3><pre>akkamo.reactiveMongo {
+
+ 	<span class="cmt">// ReactiveMongo loads its configuration from here (e.g. configuration of the</span>
+ 	<span class="cmt">// underlying Akka system)</span>
+ 	akka {
+   		loglevel = WARNING
+ 	}
+  name1 = {
+    aliases=[<span class="lit">"alias1"</span>, <span class="lit">"alias2"</span>]
+    default = <span class="kw">true</span> <span class="cmt">// required if more than one reactive mongo configuration exists</span>
+    uri = <span class="lit">"mongodb://someuser:somepasswd@localhost:27017/your_db_name"</span>
+  }
+  name2 = {
+    aliases=[<span class="lit">"alias1"</span>, <span class="lit">"alias2"</span>]
+    uri = <span class="lit">"mongodb://someuser:somepasswd@localhost:27017/your_db_name"</span>
+  }
+}</pre><p>Above is the working example of simple module configuration. In this configuration example,
+one <i>ReactiveMongo</i> connection is created and will be registered into the <i>Akkamo</i> context.
+Each configured connection is registered into the <i>Akkamo</i> context as the
+<a href="ReactiveMongoApi.html" class="extype" name="eu.akkamo.mongo.ReactiveMongoApi">eu.akkamo.mongo.ReactiveMongoApi</a> interface and is avaiable for injection via its name
+(e.g. <i>name1</i>), aliases (if defined, e.g. <i>alias1</i> or <i>alias2</i>), or if defined as
+<i>default</i> without any name identifier.</p><h4>If configuration is missing, then default entry with <code>uri: mongodb://localhost/default</code> is created.</h4></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
