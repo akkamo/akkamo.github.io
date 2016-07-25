@@ -61,7 +61,7 @@
         data-chapter-title="Akkamo Module"
         data-filepath="how-it-works/module.md"
         data-basepath=".."
-        data-revision="Mon Jul 25 2016 08:41:34 GMT+0200 (CEST)"
+        data-revision="Mon Jul 25 2016 12:43:33 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -331,8 +331,85 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="akkamo-module">Akkamo Module</h1>
-<p><em>Akkamo</em> module is the cornerstone of each modular application based on this platform. Module is nothing more than an old-good Scala class, implementing appropriate <em>traits</em> and their methods.
-Each module is represented by the class implementing at least <code>eu.akkamo.Module</code> trait. For module lookup during <em>Akkamo</em> startup, Java&apos;s <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html" target="_blank">ServiceLoader</a> mechanism is used, therefore for each <em>Akkamo</em> module a new line with <em>fully qualified domain name</em> of module&apos;s class must be added to the <code>eu.akkamo.Module</code> file located in the <code>META-INF/services/</code> directory of module&apos;s JAR file.</p>
+<p><em>Akkamo module</em> is the cornerstone of each modular application based on this platform. Module is
+nothing more than an old-good Scala class, implementing appropriate <em>traits</em> and their methods.
+Each module is represented by the class implementing at least <code>eu.akkamo.Module</code> trait. For module
+lookup during <em>Akkamo</em> startup, Java&apos;s
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html" target="_blank">ServiceLoader</a> mechanism
+is used, therefore for each <em>Akkamo</em> module a new line with <em>fully qualified domain name</em> of
+module&apos;s class must be added to the <code>eu.akkamo.Module</code> file located in the <code>META-INF/services/</code>
+directory of module&apos;s JAR file.</p>
+<h2 id="creating-new-akkamo-module">Creating new Akkamo module</h2>
+<p>Akkamo module is nothing special but plain Scala class, implementing several traits. Each module
+must implement the <code>eu.akkamo.Module</code> trait, example of the simplest possible module is below:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> {</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependency</span> = dependencies
+}
+</code></pre>
+<p>Method <code>dependencies</code> needs some deeper explanation. If our module interacts with any other module
+(e.g. injects its registered services), such module <strong>must</strong> be declared as our module&apos;s dependency.
+This is done exactly using the <code>dependencies</code> method, using the following syntax:</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependency</span> =
+  dependencies.&amp;&amp;[<span class="hljs-type">ModuleA</span>].&amp;&amp;[<span class="hljs-type">ModuleB</span>]
+</code></pre>
+<p>The above example defines the <code>ModuleA</code> and <code>ModuleB</code> modules as dependencies.</p>
+<blockquote class="clearfix alert alert-warning"><strong class="fa fa-4x fa-exclamation-triangle"></strong>
+<p> Please pay attention to always properly define your module dependencies. If not done
+so, dependend modules may not be properly initialized during the Akkamo initialization, which may
+lead to unexpected runtime errors.</p>
+</blockquote>
+<h2 id="module-lifecycle">Module lifecycle</h2>
+<p><em>Akkamo module</em> allows to run specific application code during every
+<a href="lifecycle.html">Akkamo lifecycle</a>. For every lifecycle stage, there is appropriate Scala trait, which
+has to be extended and implemented in order to run code during the selected lifecycle stage. Below
+is the overview of available lifecycle Scala traits.</p>
+<h3 id="initialization-stage">Initialization stage</h3>
+<p>In order to run application code during the <em>initialization stage</em>, the trait
+<em>eu.akkamo.Initializable</em> must be extended, as in following example:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span>(</span>ctx: <span class="hljs-type">Context</span>): <span class="hljs-type">Res</span>[<span class="hljs-type">Context</span>] = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// application code here</span>
+  }
+}
+</code></pre>
+<p>The <code>initialize</code> method is the called during the initialization stage of the <em>Akkamo lifecycle</em>.
+This method may return <a href="http://www.scala-lang.org/api/current/index.html#scala.util.Try" target="_blank">Try</a> or
+<a href="http://www.scala-lang.org/api/current/index.html#scala.concurrent.Future" target="_blank">Future</a> which is
+implicitly converted into the <code>Res[Context]</code>.</p>
+<blockquote class="clearfix alert alert-info"><strong class="fa fa-4x fa-info"></strong>
+<p> In this lifecycle stage, you should register all your module services. Never do this in
+any later stage.</p>
+</blockquote>
+<h3 id="run-stage">Run stage</h3>
+<p>In order to run application code during the <em>run stage</em>, the trait
+<em>eu.akkamo.Runnable</em> must be extended, as in following example:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Runnable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(</span>ctx: <span class="hljs-type">Context</span>): <span class="hljs-type">Res</span>[<span class="hljs-type">Context</span>] = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// application code here</span>
+  }
+}
+</code></pre>
+<h3 id="dispose-stage">Dispose stage</h3>
+<p>In order to run application code during the <em>dispose stage</em>, the trait
+<em>eu.akkamo.Disposable</em> must be extended, as in following example:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Disposable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dispose</span>(</span>ctx: <span class="hljs-type">Context</span>): <span class="hljs-type">Res</span>[<span class="hljs-type">Unit</span>] = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// application code here</span>
+  }
+}
+</code></pre>
+<h2 id="registering-module-into-akkamo">Registering module into Akkamo</h2>
+<p>When your module is ready, it must be explicitly registered into the <em>Akkamo</em>, in order to find and
+run it during the application startup. As described in the beginning of the chapter, <em>Akkamo</em> uses
+the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html" target="_blank">ServiceLoader</a>
+mechanism. To register the module, following steps must be done:</p>
+<ul>
+<li>in the module <em>JAR</em> file, create directory <code>META-INF/services</code></li>
+<li>in that directory, create new file called <code>eu.akkamo.Module</code></li>
+<li>each line of this file should contain <em>fully qualified domain name</em> of your module
+(e.g. <code>my.company.FooModule</code>), one line per module</li>
+</ul>
 
                     
                     </section>
