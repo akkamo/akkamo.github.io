@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Akka HTTP module | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
+    <link rel="next" href="../modules/config-module.html" />
     
     
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../modules/akka-module.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="3.2"
+        data-chapter-title="Akka HTTP module"
+        data-filepath="modules/akka-http-module.md"
         data-basepath=".."
         data-revision="Mon Jul 25 2016 08:41:34 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +171,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -202,7 +202,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="modules/akka-http-module.html">
+        <li class="chapter active" data-level="3.2" data-path="modules/akka-http-module.html">
             
                 
                     <a href="../modules/akka-http-module.html">
@@ -330,16 +330,88 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
+                        <h1 id="akka-http-module">Akka HTTP module</h1>
+<p>This module adds support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a
+client/server HTTP library built upon the <a href="http://akka.io" target="_blank">Akka</a> framework.</p>
+<h2 id="module-configuration">Module configuration</h2>
+<p>This module requires its configuration under the <code>akkamo.akkaHttp</code> namespace. Each configuration
+block under this namespace represents the configuration of single HTTP connection and will register
+into the <em>Akkamo context</em> instance of the <code>RouteRegistry</code> allowing to register HTTP routes for
+specified HTTP connection.</p>
+<h3 id="configuration-keys">Configuration keys</h3>
 <ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
+<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the HTTP connection
+will be registered to the <em>Akkamo</em> context</li>
+<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the HTTP connection will be available for
+injection as <em>default</em> (Please note that only one configured connection can be specified as
+<em>default</em>)</li>
+<li><code>port</code> - specifies the connection port</li>
+<li><code>protocol</code> - specifies the protocol (e.g. <code>http</code>, <code>https</code>)</li>
+<li><code>host</code> - connection host name (e.g. <code>localhost</code>)</li>
+<li><code>akkaAlias</code> - name/alias of already configured <em>Akka</em> actor system, provided by
+<a href="akka-module.html">Akka module</a>, if not defined, <em>default</em> registered actor system will be used</li>
+<li><code>requestLogLevel</code> <em>(optional)</em> - defined log level for request level logging, default <code>off</code> means
+no logging</li>
+<li><code>requestLogContentLength</code> <em>(optional)</em> - defines max content length of request log, default <code>0</code>
+means disabled content</li>
+</ul>
+<p>Example of fully working configuration is shown below:</p>
+<pre><code>akkamo.akkaHttp = {
+  // complete configuration with several name aliases
+  name1 = {
+    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]
+    port = 9000 // port, not mandatory
+    protocol = &quot;http&quot; // http, https, ...
+    host = &quot;localhost&quot; // host, default localhost
+    akkaAlias = &quot;alias&quot; // not required, default is used if exists
+    requestLogLevel = &quot;info&quot;  // defines level for request level logging. Default &quot;off&quot; means no logging
+    requestLogContentLength = 1024 // defines max content length in request log, default 0  to disable content logging
+  }
+}
+</code></pre><p>The above configuration creates one HTTP connection, registered into the context under its name
+<code>name1</code> and aliases <code>alias1</code> and <code>alias2</code>.</p>
+<h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>Each configured connection registers into the <em>Akkamo context</em> instance of <code>RouteRegistry</code>,
+inside which single <em>routes</em> for such connection are registered. For more info about
+<em>Akka HTTP</em> routes, see
+<a href="http://doc.akka.io/docs/akka/current/scala/http/routing-dsl/index.html" target="_blank">the offical documentation</a></p>
+<p>Below is the example code, showing how to register own routes into <code>RouteRegistry</code> configured using
+the sample configuration above.</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(</span>ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">route</span>:</span> <span class="hljs-type">Route</span> = {
+    get {
+      path(<span class="hljs-string">&quot;test&quot;</span>) {
+        complete(<span class="hljs-string">&quot;hello, world!&quot;</span>)
+      }
+    }
+  }
+
+  <span class="hljs-comment">// registers the route into already registered RouteRegistry for configuration named &apos;name1&apos;</span>
+  ctx.registerIn[<span class="hljs-type">RouteRegistry</span>, <span class="hljs-type">Route</span>](route, <span class="hljs-type">Some</span>(<span class="hljs-string">&quot;name1&quot;</span>))
+
+  <span class="hljs-comment">// OR the same as above, but using the alias</span>
+  ctx.registerIn[<span class="hljs-type">RouteRegistry</span>, <span class="hljs-type">Route</span>](route, <span class="hljs-type">Some</span>(<span class="hljs-string">&quot;alias2&quot;</span>))
+
+    <span class="hljs-comment">// ... rest of method code ...</span>
+
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add Akka HTTP module dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">AkkaHttpModule</span>]
+}
+</code></pre>
+<h2 id="provided-apis">Provided APIs</h2>
+<p>This module registers into the <em>Akkamo</em> context following services:</p>
+<ul>
+<li><code>RouteRegistry</code> - registry, allowing to register HTTP routes to selected connection</li>
+</ul>
+<h2 id="module-dependencies">Module dependencies</h2>
+<p>This module depends on following core modules:</p>
+<ul>
+<li><a href="akka-module.html">Akka module</a></li>
+<li><a href="config-module.html">Config module</a></li>
 </ul>
 
                     
@@ -351,10 +423,10 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../modules/akka-module.html" class="navigation navigation-prev " aria-label="Previous page: Akka module"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
+        <a href="../modules/config-module.html" class="navigation navigation-next " aria-label="Next page: Config module"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

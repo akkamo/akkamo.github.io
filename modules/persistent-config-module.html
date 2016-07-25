@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Persistent config module | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
+    <link rel="next" href="../modules/reactivemongo-module.html" />
     
     
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../modules/log-module.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="3.6"
+        data-chapter-title="Persistent config module"
+        data-filepath="modules/persistent-config-module.md"
         data-basepath=".."
         data-revision="Mon Jul 25 2016 08:41:34 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +171,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -262,7 +262,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.6" data-path="modules/persistent-config-module.html">
+        <li class="chapter active" data-level="3.6" data-path="modules/persistent-config-module.html">
             
                 
                     <a href="../modules/persistent-config-module.html">
@@ -330,16 +330,60 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
+                        <h1 id="persistent-config-module">Persistent config module</h1>
+<p>This module provides support for persisted configuration. The default implementation provided by
+this module uses <em>MongoDB</em> as a persistent storage.</p>
+<h2 id="module-configuration">Module configuration</h2>
+<p>This module does not require any configuration.</p>
+<h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>At first, you must decide whether you will use the default implementation of this module,
+<code>MongoPersistentConfigModule</code>, or you will implement the trait <code>PersistentConfigModule</code> and provide
+your own. Regardless of the actual used implementation itself, the trait <code>PersistentConfigModule</code> is
+always used for injection, not the implementation. Which implementation will be actually used is
+specified by choosing the proper module implementation in the build description of your module:</p>
 <ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
+<li><p><strong>Select default module implementation</strong><br>In this example, the <code>MongoPersistentConfigModule</code> is used as an implementation of the
+<code>PersistentConfigModule</code> trait. This must be defined by adding the proper dependency to your
+<code>build.sbt</code> file:</p>
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;eu.akkamo&quot;</span> %% <span class="hljs-string">&quot;akkamo-mongo-persistent-config&quot;</span> % versionHere
+</code></pre>
+</li>
+<li><p><strong>Inject service into your module</strong>
+This module registers into the <em>Akkamo context</em> the <code>PersistentConfig</code> service. Further details
+are described in the next chapter.  </p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span>(</span>ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// injects optional value of PersistentConfig</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">persistentConfigOpt</span>:</span> <span class="hljs-type">Option</span>[<span class="hljs-type">PersistentConfig</span>] = ctx.inject[<span class="hljs-type">PersistentConfig</span>]
+
+    <span class="hljs-comment">// or inject direct value of Persistent config (throws exception if value not found)</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">persistentConfig</span>:</span> <span class="hljs-type">PersistentConfig</span> = ctx.get[<span class="hljs-type">PersistentConfig</span>]
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add Persistent config module dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">PersistentConfigModule</span>]
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="provided-apis">Provided APIs</h2>
+<p>This module registers into the <em>Akkamo context</em> following services:</p>
+<ul>
+<li><code>PersistentConfig</code> - provides following methods for managing the properties:<ul>
+<li><code>def get[T](key: String)(implicit r: Reader[T]): Future[T]</code><br>Returns the value of property specified by the <code>key</code>.</li>
+<li><code>def store[T](key: String, value: T)(implicit writer: Writer[T])</code><br>Stores the property <code>value</code> under the specified <code>key</code>.</li>
+<li><code>def remove(key: String)</code><br>Removes the property specified by the <code>key</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="module-dependencies">Module dependencies</h2>
+<p>The default provided implementation of the <code>PersistentConfigModule</code>, the
+<code>MongoPersistentConfigModule</code>, has dependencies on following core modules:</p>
+<ul>
+<li><a href="config-module.html">Config module</a></li>
+<li><a href="log-module.html">Log module</a></li>
+<li><a href="reactivemongo-module.html">ReactiveMongo module</a></li>
 </ul>
 
                     
@@ -351,10 +395,10 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../modules/log-module.html" class="navigation navigation-prev " aria-label="Previous page: Log module"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
+        <a href="../modules/reactivemongo-module.html" class="navigation navigation-next " aria-label="Next page: ReactiveMongo module"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
