@@ -57,11 +57,11 @@
         
         
     <div class="book"
-        data-level="3.7"
+        data-level="3.8"
         data-chapter-title="ReactiveMongo module"
         data-filepath="modules/reactivemongo-module.md"
         data-basepath=".."
-        data-revision="Thu Aug 04 2016 10:13:20 GMT+0200 (CEST)"
+        data-revision="Thu Aug 04 2016 12:43:46 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -262,14 +262,29 @@
             
         </li>
     
-        <li class="chapter " data-level="3.6" data-path="modules/persistent-config-module.html">
+        <li class="chapter " data-level="3.6" data-path="modules/mongo-module.html">
+            
+                
+                    <a href="../modules/mongo-module.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.6.</b>
+                        
+                        Mongo module
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="modules/persistent-config-module.html">
             
                 
                     <a href="../modules/persistent-config-module.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.6.</b>
+                            <b>3.7.</b>
                         
                         Persistent config module
                     </a>
@@ -277,14 +292,14 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.7" data-path="modules/reactivemongo-module.html">
+        <li class="chapter active" data-level="3.8" data-path="modules/reactivemongo-module.html">
             
                 
                     <a href="../modules/reactivemongo-module.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.7.</b>
+                            <b>3.8.</b>
                         
                         ReactiveMongo module
                     </a>
@@ -292,14 +307,14 @@
             
         </li>
     
-        <li class="chapter " data-level="3.8" data-path="modules/webcontent-module.html">
+        <li class="chapter " data-level="3.9" data-path="modules/webcontent-module.html">
             
                 
                     <a href="../modules/webcontent-module.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.8.</b>
+                            <b>3.9.</b>
                         
                         Web content module
                     </a>
@@ -397,13 +412,22 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="reactivemongo-module">ReactiveMongo module</h1>
-<p>This module provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database,
+<p>This module provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the
 <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver.</p>
+<blockquote class="clearfix alert alert-info"><strong class="fa fa-4x fa-info"></strong>
+<p>
+  If you are interested in using the official
+  <a href="https://github.com/mongodb/mongo-scala-driver" target="_blank">Mongo Scala driver</a>, please refer the
+  <a href="mongo-module.html">Mongo Module</a> document.</p>
+</blockquote>
 <h2 id="module-configuration">Module configuration</h2>
 <p>This module requires its configuration under the <code>akkamo.reactiveMongo</code> namespace. Each
 configuration block under this namespace represents the configuration of single MongoDB connection
-and will be registered into the <em>Akkamo</em> context as the instance of <code>ReactiveMongoApi</code> trait.</p>
+and will be registered into the <em>Akkamo context</em> as the instance of <code>ReactiveMongoApi</code> trait.</p>
 <h3 id="configuration-keys">Configuration keys</h3>
+<p>As all built-in <em>Akkamo</em> modules, this module follows the
+<a href="../best-practices/module-config.html">configuration best practices</a>. Please refer this chapter for
+further details. Below are listed all available configuration keys:</p>
 <ul>
 <li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the connection will be
 registered to the <em>Akkamo</em> context</li>
@@ -455,13 +479,12 @@ using the following rules:</p>
 <em>default</em> connection and can be injected without specifying the key, e.g.
 <code>ctx.inject[ReactiveMongoApi]</code>. Please note that only one configured connection can be specified
 as <em>default</em>.</li>
-<li><p><strong>inject by the name alias</strong><br>Besides the configuration name, each configured connection can be identified by one or more
+<li><strong>inject by the name alias</strong><br>Besides the configuration name, each configured connection can be identified by one or more
 <em>alias name</em>. Such <em>alias name</em> can be used to inject the selected connection, e.g.
-<code>ctx.inject[ReactiveMongoApi](&quot;alias3&quot;)</code>.</p>
+<code>ctx.inject[ReactiveMongoApi](&quot;alias3&quot;)</code>.</li>
+</ul>
 <p>Below is example code of very simple module, injecting actor systems configured by configuration
 example shown above.</p>
-</li>
-</ul>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
   <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span>(</span>ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
     <span class="hljs-comment">// injects the connection marked as default (&apos;conn1&apos; in this case)</span>
@@ -483,7 +506,7 @@ example shown above.</p>
 }
 </code></pre>
 <h2 id="provided-apis">Provided APIs</h2>
-<p>This module registers into the <em>Akkamo</em> context following types:</p>
+<p>This module registers into the <em>Akkamo context</em> following types:</p>
 <ul>
 <li><code>ReactiveMongoApi</code><br>For each configured MongoDB connection, instance of this trait will be registered into the
 <em>Akkamo</em> context. This trait provides following fields:<ul>

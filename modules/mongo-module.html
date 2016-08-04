@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Akkamo Context | Akkamo Documentation</title>
+        <title>Mongo module | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/index.html" />
+    <link rel="next" href="../modules/persistent-config-module.html" />
     
     
-    <link rel="prev" href="../how-it-works/module.html" />
+    <link rel="prev" href="../modules/log-module.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="2.3"
-        data-chapter-title="Akkamo Context"
-        data-filepath="how-it-works/context.md"
+        data-level="3.6"
+        data-chapter-title="Mongo module"
+        data-filepath="modules/mongo-module.md"
         data-basepath=".."
         data-revision="Thu Aug 04 2016 12:43:46 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -151,7 +151,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3" data-path="how-it-works/context.html">
+        <li class="chapter " data-level="2.3" data-path="how-it-works/context.html">
             
                 
                     <a href="../how-it-works/context.html">
@@ -262,7 +262,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.6" data-path="modules/mongo-module.html">
+        <li class="chapter active" data-level="3.6" data-path="modules/mongo-module.html">
             
                 
                     <a href="../modules/mongo-module.html">
@@ -411,76 +411,102 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="akkamo-context">Akkamo Context</h1>
-<p><em>Akkamo context</em> represents the central point of the <em>Akkamo</em>  platform, where different modules can
-register own services provided to other modules, or from where already registered services can be
-injected.</p>
-<h2 id="registering-service-into-context">Registering service into context</h2>
-<p>Every module can register own services into the <em>Akkamo context</em> using one of the following methods:</p>
-<ul>
-<li><p><code>def register[T &lt;: AnyRef](value: T, key: Option[String] = None)(implicit ct: ClassTag[T]): Context</code><br>This method registers the service instance into the <em>Akkamo context</em>, such service is then available
-to any other module via one of the <code>inject</code> methods. This method allows to register service under
-the specified <em>key</em>,, which is primarily used to disambiguate between multiple registered services
-of the same type and must be then used when injecting the service. Please note that because the 
-<em>Akkamo context</em> is immutable, new updated instance of context will be
-returned.</p>
-</li>
-<li><p><code>def register[T &lt;: AnyRef](value: T, key: String)(implicit ct: ClassTag[T]): Context</code><br>This method provides same functionality as previous, but the <em>key</em> parameter is not optional in this
-one.</p>
-</li>
-</ul>
+                        <h1 id="mongo-module">Mongo module</h1>
+<p>This module provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the official
+<a href="https://github.com/mongodb/mongo-scala-driver" target="_blank">Mongo Scala driver</a>.</p>
 <blockquote class="clearfix alert alert-info"><strong class="fa fa-4x fa-info"></strong>
-<p> Please note that registering services into the context should be allways
-done during the <em>Init</em> stage of the <em>Akkamo</em> lifecycle.</p>
+<p>
+  If you are interested in using
+  the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver instead, please refer the
+  <a href="reactivemongo-module.html">ReactiveMongo Module</a> document.</p>
 </blockquote>
-<hr>
-<blockquote class="clearfix alert alert-warning"><strong class="fa fa-4x fa-exclamation-triangle"></strong>
-<p> The <code>register</code> method always return a new instance Of <code>Context</code>.</p>
-</blockquote>
-<h2 id="registering-bean-into-registered-service">Registering bean into registered service</h2>
-<p>Instead of use mutable services we recommends to use immutable service bean that implements trait
-<code>eu.akkamo.Registry[Route]</code>.Typical example can be found in the  HttpModule. HttpModule registers
-several (at least one) <code>RouteRegistry</code> instances. Each RouteRegistry instance implements <code>Registry[Route]</code> trait.
-Thus the <code>RouteRegistry</code> is able to create a self copy (via method <code>copyWith(p: Route): this.type</code>) containing
-the new instance of Route.<br> There is definition of <code>Route</code> trait:</p>
-<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Registry</span>[</span><span class="hljs-type">T</span>] {
- <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">copyWith</span>(</span>p: <span class="hljs-type">T</span>): <span class="hljs-keyword">this</span>.<span class="hljs-keyword">type</span>
+<h2 id="module-configuration">Module configuration</h2>
+<p>This module requires its configuration under the <code>akkamo.mongo</code> namespace. Each configuration block
+under this namespace represents the configuration of single MongoDB connection and will be
+registered into the <em>Akkamo context</em> as the instance of <code>MongoApi</code> trait.</p>
+<h3 id="configuration-keys">Configuration keys</h3>
+<p>As all built-in <em>Akkamo</em> modules, this module follows the
+<a href="../best-practices/module-config.html">configuration best practices</a>. Please refer this chapter for
+further details. Below are listed all available configuration keys:</p>
+<ul>
+<li><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the connection will be
+registered to the <em>Akkamo</em> context</li>
+<li><code>default</code> <em>(optional)</em> - <code>true/false</code> whether the connection will be available for injection as
+<em>default</em> (Please note that only one configured connection can be specified as <em>default</em>)</li>
+<li><code>uri</code> - MongoDB URI (see
+ <a href="https://docs.mongodb.com/manual/reference/connection-string/" target="_blank">MongoDB documentation</a> for more
+ details)</li>
+</ul>
+<p>Example, fully working configuration is shown below:</p>
+<pre><code>akkamo.mongo {
+  conn1 {   // MongoDB connection with name &apos;conn1&apos;
+    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]    // aliases for the connection &apos;conn1&apos;
+    default = true  // marks that this connection is the default one
+    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
+  }
+
+  conn2 {   // MongoDB connection with name &apos;conn2&apos;
+    aliases = [&quot;alias3&quot;]    // aliases for the connection &apos;conn1&apos;
+    uri = &quot;mongodb://someuser:somepasswd@localhost:27017/your_db1_name&quot;   // MongoDB URI
+  }
+}
+</code></pre><p>The above configuration creates two MongoDB connections, one with name <em>conn1</em>, aliases <em>alias1</em> and
+<em>alias2</em> and also marked as the <em>default</em> connection, second with name <em>conn2</em> and alias <em>alias3</em>.</p>
+<h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>Each configured connection is registered into the <em>Akkamo context</em> and available for injection,
+using the following rules:</p>
+<ul>
+<li><strong>inject by the configuration name</strong><br>Selected connection can be injected using its configuration name, e.g.
+<code>ctx.inject[MongoApi](&quot;conn1&quot;)</code></li>
+<li><strong>inject the default connection</strong><br>If any configured connection has set the <code>default = true</code> property, it will be considered as
+<em>default</em> connection and can be injected without specifying the key, e.g.
+<code>ctx.inject[MongoApi]</code>. Please note that only one configured connection can be specified
+as <em>default</em>.</li>
+<li><strong>inject by the name alias</strong><br>Besides the configuration name, each configured connection can be identified by one or more
+<em>alias name</em>. Such <em>alias name</em> can be used to inject the selected connection, e.g.
+<code>ctx.inject[MongoApi](&quot;alias3&quot;)</code>.</li>
+</ul>
+<p>Below is example code of very simple module, injecting actor systems configured by configuration
+example shown above.</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span>(</span>ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// injects the connection marked as default (&apos;conn1&apos; in this case)</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">conn1</span>:</span> <span class="hljs-type">Option</span>[<span class="hljs-type">MongoApi</span>] = ctx.inject[<span class="hljs-type">MongoApi</span>]
+
+    <span class="hljs-comment">// same as above, with explicitly specified name</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">conn1_1</span>:</span> <span class="hljs-type">Option</span>[<span class="hljs-type">MongoApi</span>] = ctx.inject[<span class="hljs-type">MongoApi</span>](<span class="hljs-string">&quot;conn1&quot;</span>)
+
+    <span class="hljs-comment">// injects the connection &apos;conn2&apos;, which has defined the alias &apos;alias3&apos;</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">conn2</span>:</span> <span class="hljs-type">Option</span>[<span class="hljs-type">MongoApi</span>] = ctx.inject[<span class="hljs-type">MongoApi</span>](<span class="hljs-string">&quot;alias3&quot;</span>)
+
+    <span class="hljs-comment">// ... rest of method code ...</span>
+
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add MongoModule module dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">MongoModule</span>]
 }
 </code></pre>
-<p>On the context exist method:</p>
+<h2 id="provided-apis">Provided APIs</h2>
+<p>This module registers into the <em>Akkamo context</em> following types:</p>
 <ul>
-<li><code>def registerIn[T &lt;: Registry[X], X](x: X, key: Option[String] = None)(implicit ct: ClassTag[T]): Context</code>
-that realise update of instance <code>T</code> with instance of X for given <code>key</code>.</li>
+<li><code>MongoApi</code><br>For each configured MongoDB connection, instance of this trait will be registered into the
+<em>Akkamo context</em>. This trait provides following fields:<ul>
+<li><code>client</code> - a client-side representation of the configured <em>MongoDB</em> cluster. See the
+<a href="https://mongodb.github.io/mongo-scala-driver/1.1/scaladoc/#org.mongodb.scala.MongoClient" target="_blank">official Scaladoc</a>
+documentation.</li>
+<li><code>db</code> - representation of the database, allowing to access its collections. See the
+<a href="https://mongodb.github.io/mongo-scala-driver/1.1/scaladoc/#org.mongodb.scala.MongoDatabase" target="_blank">official Scaladoc</a>
+documentation.</li>
 </ul>
-<p>Typical usage of register method looks like:</p>
-<pre><code class="lang-scala">ctx.registerIn[<span class="hljs-type">RouteRegistry</span>, <span class="hljs-type">Route</span>](route, <span class="hljs-type">Some</span>(<span class="hljs-string">&quot;key&quot;</span>))
-</code></pre>
-<blockquote class="clearfix alert alert-info"><strong class="fa fa-4x fa-info"></strong>
-<p> Also method <code>register</code> with the parameter <code>key</code> as plain <code>String</code> is defined.</p>
-</blockquote>
-<hr>
-<blockquote class="clearfix alert alert-warning"><strong class="fa fa-4x fa-exclamation-triangle"></strong>
-<p> The <code>register</code> method always return a new instance of <code>Context</code>.</p>
-</blockquote>
-<h2 id="injection-services-from-context">Injection services from context</h2>
-<p>Injection of services, previously registered into the <em>Akkamo context</em>, can be done using one of the
-<code>inject</code> or <code>get</code> methods, during the <em>Init</em> or <em>Run</em> stages of the <em>Akkamo</em> lifecycle. Following
-methods are available for injecting already registered services:</p>
+</li>
+</ul>
+<h2 id="module-dependencies">Module dependencies</h2>
+<p>This module depends on following core modules:</p>
 <ul>
-<li><p><code>def inject[T](implicit ct: ClassTag[T]): Option[T]</code><br>Injects service which has been previously registered into the <em>Akkamo context</em> as a <em>default</em>
-service, i.e. without any identifier <code>key</code>.</p>
-</li>
-<li><p><code>def get[T](implicit ct: ClassTag[T]): T</code><br>Provides same functionality as method above, but instead of optional result returns service
-instance, or throws <code>ContextError</code> if no instance was found.</p>
-</li>
-<li><p><code>def inject[T](key: String, strict: Boolean = false)(implicit ct: ClassTag[T]): Option[T]</code><br>Injects service which has been previously registered into the <em>Akkamo context</em>. If an <code>key</code> was used
-during registration, it must be specified now. If no service instance exists for given key,
-<em>default</em> service is returned (i.e. service which has been registered without any identifier <code>key</code>).
-This behaviour can be disabled by setting the <code>strict</code> parameter to <code>true</code>.</p>
-</li>
-<li><p><code>def get[T](key: String, strict: Boolean = false)(implicit ct: ClassTag[T]): T</code><br>Provides same functionality as method above, but instead of optional result returns service
-instance, or throws <code>ContextError</code> if no instance was found.</p>
-</li>
+<li><a href="config-module.html">Config module</a></li>
+<li><a href="log-module.html">Log module</a></li>
 </ul>
 
                     
@@ -492,10 +518,10 @@ instance, or throws <code>ContextError</code> if no instance was found.</p>
         </div>
 
         
-        <a href="../how-it-works/module.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Module"><i class="fa fa-angle-left"></i></a>
+        <a href="../modules/log-module.html" class="navigation navigation-prev " aria-label="Previous page: Log module"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/index.html" class="navigation navigation-next " aria-label="Next page: Core modules"><i class="fa fa-angle-right"></i></a>
+        <a href="../modules/persistent-config-module.html" class="navigation navigation-next " aria-label="Next page: Persistent config module"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
