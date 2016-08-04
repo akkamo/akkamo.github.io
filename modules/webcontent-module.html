@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Web content module | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
+    <link rel="next" href="../best-practices/index.html" />
     
     
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../modules/reactivemongo-module.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="3.8"
+        data-chapter-title="Web content module"
+        data-filepath="modules/webcontent-module.md"
         data-basepath=".."
         data-revision="Thu Aug 04 2016 10:13:20 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +171,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -292,7 +292,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.8" data-path="modules/webcontent-module.html">
+        <li class="chapter active" data-level="3.8" data-path="modules/webcontent-module.html">
             
                 
                     <a href="../modules/webcontent-module.html">
@@ -396,16 +396,125 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
+                        <h1 id="web-content-module">Web content module</h1>
+<p>This module provides support for serving static data from particural resource (e.g. static files, directories or
+some generated content from resource). Combination of route and content generator we call <em>route generator</em>.</p>
+<h2 id="module-configuration">Module configuration</h2>
+<p>This module requires its configuration under the <code>akkamo.webContent</code> namespace.
+Each configuration block under this namespace represents the configuration of single instance of web content registry registered
+into the Akkamo context.</p>
+<p>There are two possible configuration approaches. First one is to set empty web content
+registry and add content generators manual via API (see example <em>name1</em>).
+Or second one is to configure all settings directly into configuration file (see example <em>name2</em>).</p>
+<p>If no configurations is provided, web content module is self configured with following options:</p>
+<pre><code>{
+  routeRegistryAlias=&quot;akkamo.webContent&quot;
+  default = true
+  routeGenerators = [
+    {
+      prefix = &quot;web&quot;
+      class = &quot;eu.akkamo.web.FileFromDirGenerator&quot;
+    }
+  ]
+}
+</code></pre><h3 id="configuration-keys">Configuration keys</h3>
 <ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
+<li><p><code>aliases</code> <em>(optional)</em> - defines the array of <em>alias names</em>, under which the web content registry will be registered
+  to the <em>Akkamo</em> context</p>
+</li>
+<li><p><code>default</code> <em>(optional)</em> - <code>true/false</code>
+  If number of web content registries is more then one at least one of them has to be defined as default.
+  If only single content registry is configured <em>default</em> option is not required.</p>
+</li>
+<li><p><code>routeRegistryAlias</code> <em>(optional)</em> - web content registry alias in akka http</p>
+</li>
+<li><p><code>routeGenerators</code> <em>(optional)</em> - Array of content generators configurations</p>
+</li>
+<li><p><code>prefix</code> <em>(optional)</em> - relative path that content generator is listening on</p>
+</li>
+<li><p><code>class</code> - Full name of class serving as content generator (e.g. class that loads file from file system)</p>
+</li>
+<li><p><code>parameters</code> <em>(optional)</em> - Additional parameters passed to content generator constructor (e.g. directory for static content)</p>
+</li>
+</ul>
+<h3 id="configuration-example">Configuration example</h3>
+<pre><code>akkamo.webContent {
+  // empty WebContentRegistryCreated
+  // RouteGenerators must be added manualy
+  name1 {
+    routeRegistryAlias = &quot;akkaHttpAlias&quot;
+    aliases = [&quot;alias1&quot;, &quot;alias2&quot;]
+  }
+  // WebContentRegistryCreated containing one RouteGenerator serving content
+  // of webStaticContent directory and listening on .../web
+  name2 {
+    default = true // at least in one configuration is value mandatory if the number of instances is &gt; 1
+    routeGenerators = [
+      {
+       prefix = &quot;web&quot;
+       class = &quot;eu.akkamo.web.FileFromDirGenerator&quot;
+       parameters = [&quot;/webStaticContent&quot;]
+      }
+    ]
+  }
+}
+</code></pre><h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<p>Each configured web content registry is registered into the <em>Akkamo context</em> and selected
+<code>ContentMapping</code> can be directly injected into it using the <code>registerIn</code> method of the
+<em>Akkamo content</em>. Please note that the <em>Akkamo context</em> object is immutable, hence the <code>registerIn</code>
+method returns new instance of the context object, rather than modifying the current instance.</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Runnable</span> {</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(</span>ctx: <span class="hljs-type">Context</span>): <span class="hljs-type">Res</span>[<span class="hljs-type">Context</span>] = <span class="hljs-type">Try</span> {
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">cm</span>:</span> <span class="hljs-type">ContentMapping</span> = ???  <span class="hljs-comment">// your ContentMapping</span>
+
+    <span class="hljs-comment">// Possible ways how to register the content mapping into web content registry:</span>
+
+    <span class="hljs-comment">// registers the content mapping into WebContentRegistry, configured with name &apos;name1&apos;</span>
+    ctx.registerIn[<span class="hljs-type">WebContentRegistry</span>, <span class="hljs-type">ContentMapping</span>](cm, <span class="hljs-string">&quot;name1&quot;</span>)
+
+    <span class="hljs-comment">// registers the content mapping into WebContentRegistry, marked as default (&apos;name2&apos;)</span>
+    ctx.registerIn[<span class="hljs-type">WebContentRegistry</span>, <span class="hljs-type">ContentMapping</span>](cm)
+
+    <span class="hljs-comment">// registers the content mapping into WebContentRegitry, configured for alias &apos;alias2&apos;</span>
+    ctx.registerIn[<span class="hljs-type">WebContentRegistry</span>, <span class="hljs-type">ContentMapping</span>](cm, <span class="hljs-string">&quot;alias2&quot;</span>)
+
+    <span class="hljs-comment">// ... rest of the method code</span>
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add WebContentModule dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">WebContentModule</span>]
+}
+</code></pre>
+<h3 id="provided-apis">Provided APIs</h3>
+<p>This module registers into the <em>Akkamo context</em> following services:</p>
+<ul>
+<li><p><code>WebContentRegistry</code> - provides following methods for managing the properties:</p>
+<ul>
+<li><p><code>def mapping: Map[String, RouteGenerator]</code>
+Getter for mapping <em>prefix</em> to content generator</p>
+</li>
+<li><p><code>def aliases: List[String]</code>
+Getter for web content registry aliases in akkamo context</p>
+</li>
+<li><p><code>def routeRegistryAlias: Option[String]</code>
+Getter for web content registry alias in akka http</p>
+</li>
+<li><p><code>def default: Boolean</code>
+Getter for default flag of web content registry</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="provided-content-generators">Provided content generators</h2>
+<h3 id="filefromdirgenerator">FileFromDirGenerator</h3>
+<p><code>class FileFromDirGenerator(source: File)</code> - This content generator provides static content
+from files or directories in given location <code>source: File</code>.</p>
+<h2 id="module-dependencies">Module dependencies</h2>
+<p>This module depends on following core modules:</p>
+<ul>
+<li><a href="akka-http-module.html">Akkamo Akka Http</a></li>
 </ul>
 
                     
@@ -417,10 +526,10 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../modules/reactivemongo-module.html" class="navigation navigation-prev " aria-label="Previous page: ReactiveMongo module"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
+        <a href="../best-practices/index.html" class="navigation navigation-next " aria-label="Next page: Best practices"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

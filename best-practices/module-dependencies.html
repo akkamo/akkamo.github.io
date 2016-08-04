@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Module dependencies | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,8 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
     
-    
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../best-practices/module-config.html" />
     
 
         
@@ -57,9 +55,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="4.2"
+        data-chapter-title="Module dependencies"
+        data-filepath="best-practices/module-dependencies.md"
         data-basepath=".."
         data-revision="Thu Aug 04 2016 10:13:20 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +169,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -343,7 +341,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4.2" data-path="best-practices/module-dependencies.html">
+        <li class="chapter active" data-level="4.2" data-path="best-practices/module-dependencies.html">
             
                 
                     <a href="../best-practices/module-dependencies.html">
@@ -396,17 +394,40 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
-<ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
-</ul>
+                        <h1 id="module-dependencies">Module dependencies</h1>
+<p>Very often your custom module will need to use services provided by another modules. This chapter
+describes recommended practices when defining and working with dependencies.</p>
+<h2 id="always-properly-define-dependencies">Always properly define dependencies</h2>
+<p>As described in chapter <a href="../how-it-works/module.html">Akkamo Module</a>, <strong>always</strong> pay extra attention
+when defining your module dependencies. Dependency must be defined for each module, which service
+is injected by your module. If not done so, you risk very nasty and unexpected runtime errors, as
+due to the incorrect dependency definition the <em>Akkamo</em> may initialize module in incorrect order.</p>
+<h2 id="use-own-alias-when-injecting-dependency">Use own alias when injecting dependency</h2>
+<p>Let&apos;s start with simple example. Consider having module <code>SimpleStorageModule</code>, which depends on
+<a href="../modules/reactivemongo-module.html">ReactiveMongo module</a>, as it needs access to the <em>MongoDB</em>. It
+is clean that you need to inject provided <code>ReactiveMongoApi</code>, but using which <em>key</em>?</p>
+<p>The answer is: always use your <em>key</em>. One might complain that under that key, there is probably no
+such service registered in <em>Akkamo context</em>, but don&apos;t forget that when service for specific <em>key</em>
+is not found, <em>default</em> instance of service should exist. Main goal of this recommendation is to
+always keep the decision which service instance to use on module user, with fallback to <em>default</em>
+service instance. Simple example is shown below:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimpleStorageModule</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Module</span> <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> <span class="hljs-title">Initializable</span> {</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">ContextKey</span>:</span> <span class="hljs-type">String</span> = <span class="hljs-string">&quot;SimpleStorage&quot;</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span>(</span>ctx: <span class="hljs-type">Context</span>) = <span class="hljs-type">Try</span> {
+    <span class="hljs-comment">// Using this, adopter of your module can configure dedicated MongoDB connection with</span>
+    <span class="hljs-comment">// alias &apos;SimpleStorage&apos;. If no such service is provided, default service instance is used.</span>
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">mongoApi</span>:</span> <span class="hljs-type">ReactiveMongoApi</span> = ctx.get[<span class="hljs-type">ReactiveMongoApi</span>](<span class="hljs-type">ContextKey</span>)
+
+    <span class="hljs-comment">// ... rest of the code</span>
+  }
+
+  <span class="hljs-comment">// don&apos;t forget to add ReactiveMongo module dependency to your module</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dependencies</span>(</span>dependencies: <span class="hljs-type">Dependency</span>): <span class="hljs-type">Dependencies</span> =
+    dependencies.&amp;&amp;[<span class="hljs-type">ReactiveMongoModule</span>]
+}
+</code></pre>
 
                     
                     </section>
@@ -417,10 +438,8 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../best-practices/module-config.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Module configuration"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

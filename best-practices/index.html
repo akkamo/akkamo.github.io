@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Best practices | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
+    <link rel="next" href="../best-practices/module-config.html" />
     
     
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../modules/webcontent-module.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="4"
+        data-chapter-title="Best practices"
+        data-filepath="best-practices/index.md"
         data-basepath=".."
         data-revision="Thu Aug 04 2016 10:13:20 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +171,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -312,7 +312,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4" data-path="best-practices/index.html">
+        <li class="chapter active" data-level="4" data-path="best-practices/index.html">
             
                 
                     <a href="../best-practices/index.html">
@@ -396,16 +396,19 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
+                        <h1 id="best-practices">Best practices</h1>
+<p><em>Akkamo platform</em> opens the possibility to write custom modules for various different technologies,
+frameworks and libraries. Anyone can contribute with own module, which can be handy for other
+people. Although every developer has his/her own coding style, keeping the following recommendations
+when writing <em>Akkamo modules</em> may simplify adoption your module by another developer, and you might
+find adopting someone&apos;s module easier too.</p>
+<p>This chapter describes best practices, gotchas and possible headscratchers when working with
+different parts of the <em>Akkamo platform</em>.</p>
 <ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
+<li>Chapter <a href="module-config.html">Module configuration</a> describes best practices for designing
+configuration structure of custom <em>Akkamo module</em></li>
+<li>Chapter <a href="module-dependencies.html">Module dependencies</a> describes best practices when working
+with module dependencies.</li>
 </ul>
 
                     
@@ -417,10 +420,10 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../modules/webcontent-module.html" class="navigation navigation-prev " aria-label="Previous page: Web content module"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
+        <a href="../best-practices/module-config.html" class="navigation navigation-next " aria-label="Next page: Module configuration"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

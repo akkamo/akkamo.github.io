@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Core modules | Akkamo Documentation</title>
+        <title>Module configuration | Akkamo Documentation</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -45,10 +45,10 @@
         
     
     
-    <link rel="next" href="../modules/akka-module.html" />
+    <link rel="next" href="../best-practices/module-dependencies.html" />
     
     
-    <link rel="prev" href="../how-it-works/context.html" />
+    <link rel="prev" href="../best-practices/index.html" />
     
 
         
@@ -57,9 +57,9 @@
         
         
     <div class="book"
-        data-level="3"
-        data-chapter-title="Core modules"
-        data-filepath="modules/index.md"
+        data-level="4.1"
+        data-chapter-title="Module configuration"
+        data-filepath="best-practices/module-config.md"
         data-basepath=".."
         data-revision="Thu Aug 04 2016 10:13:20 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -171,7 +171,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3" data-path="modules/index.html">
+        <li class="chapter " data-level="3" data-path="modules/index.html">
             
                 
                     <a href="../modules/index.html">
@@ -328,7 +328,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="4.1" data-path="best-practices/module-config.html">
+        <li class="chapter active" data-level="4.1" data-path="best-practices/module-config.html">
             
                 
                     <a href="../best-practices/module-config.html">
@@ -396,16 +396,120 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="core-modules">Core modules</h1>
-<p>In the default <em>Akkamo</em> distribution, several modules are available, both as a technology demo and a fully working modules. Here is the list of available modules:</p>
+                        <h1 id="module-configuration">Module configuration</h1>
+<p>Careful design of the configuration structure is the important part of module design. Consistent,
+clean and well-structured configuration, with comprehensive documentation will help other users to
+easily adopt your module.</p>
+<h2 id="basic-recommendations">Basic recommendations</h2>
+<p><em>Akkamo platform</em> already provides mechanisms for loading configuration for your custom module, via
+the following built-in modules:</p>
 <ul>
-<li><a href="akka-module.html">Akka module</a> - provides support for the <a href="http://akka.io" target="_blank">Akka</a> actor framework</li>
-<li><a href="akka-http-module.html">Akka HTTP module</a> - provides support for the <a href="http://doc.akka.io/docs/akka/current/scala/http/" target="_blank">Akka HTTP</a>, a full server-and client-side HTTP stack on top of <em>akka-actor</em> and <em>akka-stream</em> libraries</li>
-<li><a href="config-module.html">Config module</a> - provides application-wide configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> library</li>
-<li><a href="kafka-module.html">Kafka module</a> - provides support for the <a href="http://kafka.apache.org" target="_blank">Apache Kafka</a>, publish-subscribe messaging rethought as a distributed commit log</li>
-<li><a href="log-module.html">Log module</a> - providing logging support</li>
-<li><a href="persistent-config-module.html">Persistent config module</a> - providing persistable configuration, based on the <a href="https://github.com/typesafehub/config" target="_blank">Lightbend Config</a> and by default backed by the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database</li>
-<li><a href="reactivemongo-module.html">ReactiveMongo module</a> - provides support for the <a href="https://www.mongodb.com" target="_blank">MongoDB</a> database, using the <a href="http://reactivemongo.org" target="_blank">ReactiveMongo</a> Scala driver</li>
+<li><a href="../modules/config-module.html">Config module</a> - provides support for non-persistable, readonly
+configuration, using the <a href="https://github.com/typesafehub/config" target="_blank">Typesafe Config</a> library</li>
+<li><a href="../modules/persistent-config-module.html">Persistent config module</a> - provides support for
+persistable configuration, with default implementation using the
+<a href="https://www.mongodb.com" target="_blank">MongoDB</a> database as persistent storage</li>
+</ul>
+<p>Regardless of the selected configuration mechanism, you should keep in ming the following
+recommendations when designing your configuration structure:</p>
+<h3 id="use-namespaces">Use namespaces</h3>
+<p>Anyhow your project name might be unique, you should never use names without proper namespace as a
+root for your module configuration. Consider the following examples:</p>
+<pre><code>// WRONG. This name may clash with other module&apos;s config and may cause ugly runtime problems.
+httpServer {
+  // config keys here
+}
+
+// RIGHT. Always use properly namespaced root for your configuration.
+my.company.httpServer {
+  // config keys here
+}
+</code></pre><h2 id="convention-over-configuration">Convention over configuration</h2>
+<p>Either you are writing very simple module with no configuration required, or extensive plugin with
+more complicated config, you should always respect the rule <em>convention over configuration</em>. Don&apos;t
+make the user of your module feel lost in dozens of config keys. This can be easily avoided by using
+default configuration where suitable, when no configuration explicitly provided by modules&apos;s user.</p>
+<h3 id="example">Example</h3>
+<p>As an example, let the following configuration represent the configuration of our fictional module,
+providing simple <em>HTTP</em> server:</p>
+<pre><code>com.mycompany.httpServer {
+    host = localhost
+    port = 8080
+    protocol = http     // http, https
+    timeout = 300       // [seconds]
+}
+</code></pre><p>All of the above configuration keys can be set as <em>optional</em>, with defaults set to values the
+module&apos;s user would probably expected.</p>
+<h3 id="summary">Summary</h3>
+<ul>
+<li>Use default values for omitted config keys where suitable, respect the
+<em>convention over configuration</em> rule.</li>
+<li>Always properly document your module configuration, and default values in your module
+documentation.</li>
+</ul>
+<h2 id="configuring-provided-services">Configuring provided services</h2>
+<p>Very often your module will provide custom <em>services</em> to another modules by registering them into
+the <em>Akkamo context</em>. As those services usually needs some configuration,
+designing this configuration structure properly and in unified way will help adopt your module more
+easily by other users.</p>
+<h3 id="example">Example</h3>
+<p>As an example, let&apos;s extend previously shown fictional <em>HTTP</em> server module with possibility to
+register multiple <em>HTTP</em> connections. Every configured connection will be registered into the
+<em>Akkamo context</em> as an instance of service class <code>HttpConnection</code>. Below is example of well
+structured, recommended way how to configure your services, with further explanation:</p>
+<pre><code>com.mycompany.httpServer {
+    httpConnection {
+        default = true
+        aliases = [ &quot;conn1&quot;, &quot;http&quot; ]
+        host = localhost
+        port = 8080
+        protocol = http
+    }
+    httpsConnection {
+        aliases = [ &quot;conn2&quot;, &quot;https&quot; ]
+        host = localhost
+        port = 8443
+        protocol = https
+    }
+}
+</code></pre><p>So what&apos;s happening here? Inside the root of our configuration, <code>com.mycompany.httpServer</code>, two
+configuration blocks are defined. Each configuration block represents the configuration of single
+<code>HttpConnection</code> service. Name of the configuration block (e.g. <code>httpConnection</code>) represents the
+<em>key</em>, under which the connection will be registered into the <em>Akkamo context</em> and under which will
+be available for injection. Same function have the <em>aliases</em>, under which the connection is also
+available for injection. Next, notice the <code>default</code> config key. When one of the configuration is
+marked as <em>default</em>, it is registered and can be injected without explicitly specifying the <em>key</em>.
+Note that it should be always possible to mark only one configuration as <em>default</em>. When only one
+configuration is present, it should be also considered as <em>default</em> without explicitly specifying
+the <code>default</code> key.</p>
+<p>Based on the recommendations and configuration example above, let&apos;s show how our configured services
+can be injected:</p>
+<ul>
+<li><em>httpConnection</em><ul>
+<li>using its name (i.e. <code>httpConnection</code>): <code>ctx.get[HttpConnection](&quot;httpConnection&quot;)</code></li>
+<li>using one of the aliases: <code>ctx.get[HttpConnection](&quot;http&quot;)</code></li>
+<li>injectig as <em>default</em>: <code>ctx.get[HttpConnection]</code></li>
+</ul>
+</li>
+<li><em>httpsConnection</em><ul>
+<li>using its name (i.e. <code>httpsConnection</code>): <code>ctx.get[HttpConnection](&quot;httpsConnection&quot;)</code></li>
+<li>using one of the aliases: <code>ctx.get[HttpConnection](&quot;https&quot;)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="summary">Summary</h3>
+<ul>
+<li>Use consistent style for registered services configuration among your modules.</li>
+<li>Each service should be registered into the <em>Akkamo context</em> under its name, and aliases.</li>
+<li>You should register also <em>default</em> service instance, for the configuration marked as <em>default</em>
+using the <code>default</code> config key, or implicitly if only one service configuration exists.</li>
+<li>Keep in mind that combination of service type (e.g. <code>HttpConnection</code>) and <em>key</em>
+(e.g. <code>httpConnection</code>) must be unique.</li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="../how-it-works/module.html">Akkamo Module</a></li>
+<li><a href="../how-it-works/context.html">Akkamo Context</a></li>
 </ul>
 
                     
@@ -417,10 +521,10 @@
         </div>
 
         
-        <a href="../how-it-works/context.html" class="navigation navigation-prev " aria-label="Previous page: Akkamo Context"><i class="fa fa-angle-left"></i></a>
+        <a href="../best-practices/index.html" class="navigation navigation-prev " aria-label="Previous page: Best practices"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../modules/akka-module.html" class="navigation navigation-next " aria-label="Next page: Akka module"><i class="fa fa-angle-right"></i></a>
+        <a href="../best-practices/module-dependencies.html" class="navigation navigation-next " aria-label="Next page: Module dependencies"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
