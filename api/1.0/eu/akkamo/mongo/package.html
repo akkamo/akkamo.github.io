@@ -66,7 +66,63 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="eu.akkamo.mongo.ReactiveMongoApi" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="eu.akkamo.mongo.MongoApi" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="MongoApiextendsAnyRef"></a>
+      <a id="MongoApi:MongoApi"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MongoApi.html"><span class="name">MongoApi</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.package@MongoApiextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">For each configured <i>MongoDB</i> connection, instance of this trait is registered into the
+<i>Akkamo context</i> and provides API for working with the connection.</p>
+    </li><li name="eu.akkamo.mongo.MongoModule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MongoModuleextendsModulewithInitializablewithDisposable"></a>
+      <a id="MongoModule:MongoModule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MongoModule.html"><span class="name">MongoModule</span></a><span class="result"> extends <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a> with <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a> with <a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.package@MongoModuleextendsModulewithInitializablewithDisposable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><i>Akkamo module</i> providing support for <i>MongoDB</i> database using the official Scala driver
+(see <a href="http://mongodb.github.io/mongo-scala-driver/" target="_blank">http://mongodb.github.io/mongo-scala-driver/</a>).</p><div class="fullcomment"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> database using the official Scala driver
+(see <a href="http://mongodb.github.io/mongo-scala-driver/" target="_blank">http://mongodb.github.io/mongo-scala-driver/</a>).</p><h3> Example configuration </h3><pre>akkamo.mongo {
+
+  name1 {
+    aliases = [ <span class="lit">"alias1"</span>, <span class="lit">"alias2"</span> ]
+    default = <span class="kw">true</span>
+    uri = <span class="lit">"mongodb://user:password@localhost:27017/db_name"</span>
+  }
+
+  name2 {
+    aliases = [ <span class="lit">"alias3"</span> ]
+    uri = <span class="lit">"mongodb://user:password@localhost:27017/db_name2"</span>
+  }
+}</pre><p>Above is the working example of simple module configuration. In this configuration example,
+one <i>MongoDB</i> connection is created and will be registered into the <i>Akkamo</i> context.
+Each configured connection is registered into the <i>Akkamo</i> context as the
+<a href="MongoApi.html" class="extype" name="eu.akkamo.mongo.MongoApi">eu.akkamo.mongo.MongoApi</a> interface and is available for injection via its name
+(e.g. <i>name1</i>), aliases (if defined, e.g. <i>alias1</i> or <i>alias2</i>), or if defined as
+<i>default</i> without any name identifier.</p><p>For more details about the URI connection string format, see the
+<a href="https://docs.mongodb.com/manual/reference/connection-string/" target="_blank">official documentation</a>.
+</p></div></div>
+    </li><li name="eu.akkamo.mongo.ReactiveMongoApi" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ReactiveMongoApiextendsAnyRef"></a>
       <a id="ReactiveMongoApi:ReactiveMongoApi"></a>
       <h4 class="signature">

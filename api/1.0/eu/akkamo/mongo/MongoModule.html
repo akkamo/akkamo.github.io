@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>PersistentConfig - eu.akkamo.persistentconfig.PersistentConfig</title>
-          <meta name="description" content="PersistentConfig - eu.akkamo.persistentconfig.PersistentConfig" />
-          <meta name="keywords" content="PersistentConfig eu.akkamo.persistentconfig.PersistentConfig" />
+          <title>MongoModule - eu.akkamo.mongo.MongoModule</title>
+          <meta name="description" content="MongoModule - eu.akkamo.mongo.MongoModule" />
+          <meta name="keywords" content="MongoModule eu.akkamo.mongo.MongoModule" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
-            var hash = 'eu.akkamo.persistentconfig.PersistentConfig';
+            var hash = 'eu.akkamo.mongo.MongoModule';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,12 +28,12 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img alt="Trait" src="../../../lib/trait_big.png" />
-        <p id="owner"><a href="../../package.html" class="extype" name="eu">eu</a>.<a href="../package.html" class="extype" name="eu.akkamo">akkamo</a>.<a href="package.html" class="extype" name="eu.akkamo.persistentconfig">persistentconfig</a></p>
-        <h1>PersistentConfig</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="package.html" class="extype" name="eu.akkamo.persistentconfig">package persistentconfig</a>
+        <img alt="Class" src="../../../lib/class_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="eu">eu</a>.<a href="../package.html" class="extype" name="eu.akkamo">akkamo</a>.<a href="package.html" class="extype" name="eu.akkamo.mongo">mongo</a></p>
+        <h1>MongoModule</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="eu.akkamo.mongo">package mongo</a>
           </div></span></h3><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -42,18 +42,36 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">trait</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">PersistentConfig</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+        <span class="name">MongoModule</span><span class="result"> extends <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a> with <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a> with <a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents the service registered into the <i>Akkamo context</i> by this module, provides methods
-for reading, adding and deleting persistent properties.
-</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="eu.akkamo.persistentconfig.PersistentConfig">PersistentConfig</a> with <a href="StorageHolder.html" class="extype" name="eu.akkamo.persistentconfig.StorageHolder">StorageHolder</a> with <a href="ConfigHolder.html" class="extype" name="eu.akkamo.persistentconfig.ConfigHolder">ConfigHolder</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> database using the official Scala driver
+(see <a href="http://mongodb.github.io/mongo-scala-driver/" target="_blank">http://mongodb.github.io/mongo-scala-driver/</a>).</p><h3> Example configuration </h3><pre>akkamo.mongo {
+
+  name1 {
+    aliases = [ <span class="lit">"alias1"</span>, <span class="lit">"alias2"</span> ]
+    default = <span class="kw">true</span>
+    uri = <span class="lit">"mongodb://user:password@localhost:27017/db_name"</span>
+  }
+
+  name2 {
+    aliases = [ <span class="lit">"alias3"</span> ]
+    uri = <span class="lit">"mongodb://user:password@localhost:27017/db_name2"</span>
+  }
+}</pre><p>Above is the working example of simple module configuration. In this configuration example,
+one <i>MongoDB</i> connection is created and will be registered into the <i>Akkamo</i> context.
+Each configured connection is registered into the <i>Akkamo</i> context as the
+<a href="MongoApi.html" class="extype" name="eu.akkamo.mongo.MongoApi">eu.akkamo.mongo.MongoApi</a> interface and is available for injection via its name
+(e.g. <i>name1</i>), aliases (if defined, e.g. <i>alias1</i> or <i>alias2</i>), or if defined as
+<i>default</i> without any name identifier.</p><p>For more details about the URI connection string format, see the
+<a href="https://docs.mongodb.com/manual/reference/connection-string/" target="_blank">official documentation</a>.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></div>
+          <div class="superTypes hiddenContent"><a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a>, <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a>, <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
         
 
@@ -71,7 +89,7 @@ for reading, adding and deleting persistent properties.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="eu.akkamo.persistentconfig.PersistentConfig"><span>PersistentConfig</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="eu.akkamo.mongo.MongoModule"><span>MongoModule</span></li><li class="in" name="eu.akkamo.Disposable"><span>Disposable</span></li><li class="in" name="eu.akkamo.Initializable"><span>Initializable</span></li><li class="in" name="eu.akkamo.Module"><span>Module</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -88,46 +106,29 @@ for reading, adding and deleting persistent properties.
 
       <div id="template">
         <div id="allMembers">
-        
-
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="eu.akkamo.persistentconfig.PersistentConfig.Reader" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Reader[T]=(eu.akkamo.persistentconfig.Storage,com.typesafe.config.Config,String)=&gt;scala.concurrent.Future[T]"></a>
-      <a id="Reader[T]:(PersistentConfig.this)#Reader[T]"></a>
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="eu.akkamo.mongo.MongoModule#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;():eu.akkamo.mongo.MongoModule"></a>
+      <a id="&lt;init&gt;:MongoModule"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">type</span>
+        <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Reader</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = (<a href="Storage.html" class="extype" name="eu.akkamo.persistentconfig.Storage">Storage</a>, <span class="extype" name="com.typesafe.config.Config">Config</span>, <span class="extype" name="scala.Predef.String">String</span>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.Reader.T">T</span>]</span>
+        <span class="name">MongoModule</span><span class="params">()</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@Reader[T]=(eu.akkamo.persistentconfig.Storage,com.typesafe.config.Config,String)=&gt;scala.concurrent.Future[T]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="eu.akkamo.persistentconfig.PersistentConfig.Writer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Writer[T]=(eu.akkamo.persistentconfig.Storage,String,T)=&gt;scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]"></a>
-      <a id="Writer[T]:(PersistentConfig.this)#Writer[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Writer</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = (<a href="Storage.html" class="extype" name="eu.akkamo.persistentconfig.Storage">Storage</a>, <span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.Writer.T">T</span>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<a href="Storage$Result.html" class="extype" name="eu.akkamo.persistentconfig.Storage.Result">Result</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@Writer[T]=(eu.akkamo.persistentconfig.Storage,String,T)=&gt;scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@&lt;init&gt;():eu.akkamo.mongo.MongoModule" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li></ol>
             </div>
+
+        
 
         
 
@@ -145,7 +146,7 @@ for reading, adding and deleting persistent properties.
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -162,7 +163,7 @@ for reading, adding and deleting persistent properties.
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@##():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@##():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -179,11 +180,28 @@ for reading, adding and deleting persistent properties.
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="eu.akkamo.mongo.MongoModule.Keys" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Keys"></a>
+      <a id="Keys:Keys"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MongoModule$Keys$.html"><span class="name">Keys</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@Keys" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -196,7 +214,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -213,7 +231,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@clone():Object" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@clone():Object" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -224,6 +242,50 @@ for reading, adding and deleting persistent properties.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="eu.akkamo.mongo.MongoModule#dependencies" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dependencies(dependencies:eu.akkamo.Dependency):eu.akkamo.Dependency"></a>
+      <a id="dependencies(Dependency):Dependency"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dependencies</span><span class="params">(<span name="dependencies">dependencies: <a href="../Dependency.html" class="extype" name="eu.akkamo.Dependency">Dependency</a></span>)</span><span class="result">: <a href="../Dependency.html" class="extype" name="eu.akkamo.Dependency">Dependency</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@dependencies(dependencies:eu.akkamo.Dependency):eu.akkamo.Dependency" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Each <i>Akkamo</i> module must override this method in order to <b>exactly</b> define its module
+dependencies, otherwise there will be risk that it will not be initialized and run in proper
+order.</p><div class="fullcomment"><div class="comment cmt"><p>Each <i>Akkamo</i> module must override this method in order to <b>exactly</b> define its module
+dependencies, otherwise there will be risk that it will not be initialized and run in proper
+order. Fox example if this module depends on modules <code>ModuleA</code> and <code>ModuleB</code>, then the
+overridden method should look like:</p><pre><span class="kw">override</span> <span class="kw">def</span> dependencies(dependencies: Dependency): Dependency =
+  dependencies.&amp;&amp;[ModuleA].&amp;&amp;[ModuleB]ś</pre></div><dl class="paramcmts block"><dt class="param">dependencies</dt><dd class="cmt"><p>instance of <a href="../Dependency.html" class="extype" name="eu.akkamo.Dependency">eu.akkamo.Dependency</a></p></dd><dt>returns</dt><dd class="cmt"><p>chained module dependencies</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.mongo.MongoModule">MongoModule</a> → <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a></dd></dl></div>
+    </li><li name="eu.akkamo.mongo.MongoModule#dispose" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dispose(ctx:eu.akkamo.Context):eu.akkamo.Res[Unit]"></a>
+      <a id="dispose(Context):Res[Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dispose</span><span class="params">(<span name="ctx">ctx: <a href="../Context.html" class="extype" name="eu.akkamo.Context">Context</a></span>)</span><span class="result">: <a href="../Res.html" class="extype" name="eu.akkamo.Res">Res</a>[<a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@dispose(ctx:eu.akkamo.Context):eu.akkamo.Res[Unit]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Method the module extending this trait must implement, all logic performed by the module
+before <i>Akkamo</i> system shutdown should be here.</p><div class="fullcomment"><div class="comment cmt"><p>Method the module extending this trait must implement, all logic performed by the module
+before <i>Akkamo</i> system shutdown should be here. As an input parameter, <i>Akkamo</i> context is
+provided.
+</p></div><dl class="paramcmts block"><dt class="param">ctx</dt><dd class="cmt"><p><i>Akkamo</i> context</p></dd><dt>returns</dt><dd class="cmt"><p>instance of Res</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.mongo.MongoModule">MongoModule</a> → <a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -236,7 +298,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -253,7 +315,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -270,7 +332,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -281,24 +343,6 @@ for reading, adding and deleting persistent properties.
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="eu.akkamo.persistentconfig.PersistentConfig#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="get[T](key:String)(implicitr:PersistentConfig.this.Reader[T]):scala.concurrent.Future[T]"></a>
-      <a id="get[T](String)((PersistentConfig.this)#Reader[T]):Future[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">get</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="key">key: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="r">r: (<a href="" class="extype" name="eu.akkamo.persistentconfig.PersistentConfig">PersistentConfig</a>.this)#<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.Reader">Reader</span>[<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.get.T">T</span>]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.get.T">T</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@get[T](key:String)(implicitr:PersistentConfig.this.Reader[T]):scala.concurrent.Future[T]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Reads value of the persistent property, specified by its <i>key</i>.</p><div class="fullcomment"><div class="comment cmt"><p>Reads value of the persistent property, specified by its <i>key</i>.
-</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>type of the property value</p></dd><dt class="param">key</dt><dd class="cmt"><p>property key</p></dd><dt class="param">r</dt><dd class="cmt"><p>implicit property reader</p></dd><dt>returns</dt><dd class="cmt"><p>property value</p></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -311,7 +355,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -328,11 +372,56 @@ for reading, adding and deleting persistent properties.
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="eu.akkamo.Initializable#iKey" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="iKey():Class[_&lt;:eu.akkamo.Initializable]"></a>
+      <a id="iKey():Class[_&lt;:Initializable]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">iKey</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.Class">Class</span>[_ &lt;: <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@iKey():Class[_&lt;:eu.akkamo.Initializable]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Instance of <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">eu.akkamo.Initializable</a> is registered into the <i>Akkamo</i> context by default under
+this module class.</p><div class="fullcomment"><div class="comment cmt"><p>Instance of <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">eu.akkamo.Initializable</a> is registered into the <i>Akkamo</i> context by default under
+this module class. Override this method in order to achieve different registration key
+class, for example an interface instead of concrete implementation.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>registration key class</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a></dd></dl></div>
+    </li><li name="eu.akkamo.mongo.MongoModule#initialize" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="initialize(ctx:eu.akkamo.Context):eu.akkamo.Res[eu.akkamo.Context]"></a>
+      <a id="initialize(Context):Res[Context]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">initialize</span><span class="params">(<span name="ctx">ctx: <a href="../Context.html" class="extype" name="eu.akkamo.Context">Context</a></span>)</span><span class="result">: <a href="../Res.html" class="extype" name="eu.akkamo.Res">Res</a>[<a href="../Context.html" class="extype" name="eu.akkamo.Context">Context</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@initialize(ctx:eu.akkamo.Context):eu.akkamo.Res[eu.akkamo.Context]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Method the module extending this trait must implement, all module initialization logic should
+be performed here.</p><div class="fullcomment"><div class="comment cmt"><p>Method the module extending this trait must implement, all module initialization logic should
+be performed here. <i>Akkamo</i> context is given as a parameter, allowing access to all required
+dependencies and allows to register module's own functionality. The boolean return value
+should determine whether the module has been properly initialized or not (e.g. not all
+dependencies are initialized yet)
+</p></div><dl class="paramcmts block"><dt class="param">ctx</dt><dd class="cmt"><p><i>Akkamo</i> context</p></dd><dt>returns</dt><dd class="cmt"><p>instance of Res that contains (new if modified) instance of <a href="../Context.html" class="extype" name="eu.akkamo.Context">eu.akkamo.Context</a> or
+        exception packed in <code><code>Try</code></code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.mongo.MongoModule">MongoModule</a> → <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -345,7 +434,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -362,7 +451,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -379,7 +468,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@notify():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -396,47 +485,11 @@ for reading, adding and deleting persistent properties.
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="eu.akkamo.persistentconfig.PersistentConfig#remove" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="remove(key:String):scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]"></a>
-      <a id="remove(String):Future[Result]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">remove</span><span class="params">(<span name="key">key: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<a href="Storage$Result.html" class="extype" name="eu.akkamo.persistentconfig.Storage.Result">Result</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@remove(key:String):scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Removes the persistent property, specified by its <i>key</i>.</p><div class="fullcomment"><div class="comment cmt"><p>Removes the persistent property, specified by its <i>key</i>.
-</p></div><dl class="paramcmts block"><dt class="param">key</dt><dd class="cmt"><p>property key</p></dd><dt>returns</dt><dd class="cmt"><p>operation result</p></dd></dl></div>
-    </li><li name="eu.akkamo.persistentconfig.PersistentConfig#store" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="store[T](key:String,value:T)(implicitwriter:PersistentConfig.this.Writer[T]):scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]"></a>
-      <a id="store[T](String,T)((PersistentConfig.this)#Writer[T]):Future[Result]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">store</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="key">key: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="value">value: <span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.store.T">T</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="writer">writer: (<a href="" class="extype" name="eu.akkamo.persistentconfig.PersistentConfig">PersistentConfig</a>.this)#<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.Writer">Writer</span>[<span class="extype" name="eu.akkamo.persistentconfig.PersistentConfig.store.T">T</span>]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<a href="Storage$Result.html" class="extype" name="eu.akkamo.persistentconfig.Storage.Result">Result</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@store[T](key:String,value:T)(implicitwriter:PersistentConfig.this.Writer[T]):scala.concurrent.Future[eu.akkamo.persistentconfig.Storage#Result]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Stores the persistent property <i>value</i> using the specified <i>key</i>.</p><div class="fullcomment"><div class="comment cmt"><p>Stores the persistent property <i>value</i> using the specified <i>key</i>.
-</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>type of the property value</p></dd><dt class="param">key</dt><dd class="cmt"><p>property key</p></dd><dt class="param">value</dt><dd class="cmt"><p>property value</p></dd><dt class="param">writer</dt><dd class="cmt"><p>implicit property writer</p></dd><dt>returns</dt><dd class="cmt"><p>operation result</p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -449,12 +502,12 @@ for reading, adding and deleting persistent properties.
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="eu.akkamo.Module#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
       <h4 class="signature">
@@ -463,14 +516,17 @@ for reading, adding and deleting persistent properties.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@toString():String" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@toString():String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <p class="shortcomment cmt">Default implementation of <code>toString</code> of <i>Akkamo</i> module returns the module name itself
+(simple class name).</p><div class="fullcomment"><div class="comment cmt"><p>Default implementation of <code>toString</code> of <i>Akkamo</i> module returns the module name itself
+(simple class name).
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>simple class name of the <i>Akkamo</i> module</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -483,7 +539,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@wait():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -506,7 +562,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -529,7 +585,7 @@ for reading, adding and deleting persistent properties.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.persistentconfig.PersistentConfig@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#eu.akkamo.mongo.MongoModule@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -549,7 +605,13 @@ for reading, adding and deleting persistent properties.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="eu.akkamo.Disposable">
+              <h3>Inherited from <a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></h3>
+            </div><div class="parent" name="eu.akkamo.Initializable">
+              <h3>Inherited from <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a></h3>
+            </div><div class="parent" name="eu.akkamo.Module">
+              <h3>Inherited from <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></h3>

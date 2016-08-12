@@ -1,0 +1,223 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>web - eu.akkamo.web</title>
+          <meta name="description" content="web - eu.akkamo.web" />
+          <meta name="keywords" content="web eu.akkamo.web" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'eu.akkamo.web.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="eu">eu</a>.<a href="../package.html" class="extype" name="eu.akkamo">akkamo</a></p>
+        <h1>web</h1><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">web</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="eu.akkamo.web.FileFromDirGenerator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FileFromDirGeneratorextendseu.akkamo.web.WebContentRegistry.RouteGenerator"></a>
+      <a id="FileFromDirGenerator:FileFromDirGenerator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="FileFromDirGenerator.html"><span class="name">FileFromDirGenerator</span></a><span class="result"> extends <a href="WebContentRegistry$.html#RouteGenerator=()=&gt;akka.http.scaladsl.server.Route" class="extmbr" name="eu.akkamo.web.WebContentRegistry.RouteGenerator">RouteGenerator</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package@FileFromDirGeneratorextendseu.akkamo.web.WebContentRegistry.RouteGenerator" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="eu.akkamo.web.WebContentModule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="WebContentModuleextendsModulewithInitializablewithRunnable"></a>
+      <a id="WebContentModule:WebContentModule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WebContentModule.html"><span class="name">WebContentModule</span></a><span class="result"> extends <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a> with <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a> with <a href="../Runnable.html" class="extype" name="eu.akkamo.Runnable">Runnable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package@WebContentModuleextendsModulewithInitializablewithRunnable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><i>Akkamo module</i> allowing to serve static content either from the classpath resource or
+selected directory.</p><div class="fullcomment"><div class="comment cmt"><p><i>Akkamo module</i> allowing to serve static content either from the classpath resource or
+selected directory. The ways how to serve the static content can be extended at runtime by
+plugging in custom implementation of <a href="WebContentRegistry.html" class="extype" name="eu.akkamo.web.WebContentRegistry">WebContentRegistry</a>, or implementing custom
+<a href="WebContentRegistry$.html#RouteGenerator=()=&gt;akka.http.scaladsl.server.Route" class="extmbr" name="eu.akkamo.web.WebContentRegistry.RouteGenerator">WebContentRegistry.RouteGenerator</a> (see <code>routeGenerators</code> section in example documentation
+below or <a href="FileFromDirGenerator.html" class="extype" name="eu.akkamo.web.FileFromDirGenerator">FileFromDirGenerator</a> example implementation).</p><h3> Configuration example </h3><pre>akkamo.webContent = {
+  <span class="cmt">// empty WebContentRegistryCreated</span>
+  <span class="cmt">// RouteGenerators must be added manualy</span>
+  name1 = {
+    routeRegistryAlias = <span class="lit">"akkaHttpAlias"</span>
+    aliases = [<span class="lit">"alias1"</span>, <span class="lit">"alias2"</span>]
+  },
+  <span class="cmt">// WebContentRegistryCreated containing one</span>
+  <span class="cmt">// RouteGenerator serving content of web directory and listening on .../web</span>
+  name2 = {
+    default = <span class="kw">true</span> <span class="cmt">// at least in one configuration is value mandatory if the number of instances is > 1</span>
+    routeGenerators = [
+      {
+       prefix=<span class="lit">"web"</span>
+       <span class="kw">class</span> = eu.akkamo.web.FileFromDirGenerator
+       parameters = [<span class="lit">"/web"</span>]
+      }
+    ]
+  }
+}</pre><p>If no configuration is provided, default configuration equivalent to configuration snipped
+below is used, trying to serve the static content from <code>/web</code> directory, either found at
+classpath or file system (see <a href="FileFromDirGenerator.html" class="extype" name="eu.akkamo.web.FileFromDirGenerator">FileFromDirGenerator</a> for more details):</p><pre>default = {
+  routeRegistryAlias=<span class="lit">"akkamo.webContent"</span>
+  default = <span class="kw">true</span>
+  routeGenerators = [
+      {
+        <span class="kw">class</span> = eu.akkamo.web.FileFromDirGenerator
+      }
+   ]
+}</pre></div></div>
+    </li><li name="eu.akkamo.web.WebContentRegistry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="WebContentRegistryextendsRegistry[eu.akkamo.web.WebContentRegistry.ContentMapping]"></a>
+      <a id="WebContentRegistry:WebContentRegistry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="WebContentRegistry.html"><span class="name">WebContentRegistry</span></a><span class="result"> extends <a href="../Registry.html" class="extype" name="eu.akkamo.Registry">Registry</a>[<a href="WebContentRegistry$.html#ContentMapping=(String,eu.akkamo.web.WebContentRegistry.RouteGenerator)" class="extmbr" name="eu.akkamo.web.WebContentRegistry.ContentMapping">ContentMapping</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package@WebContentRegistryextendsRegistry[eu.akkamo.web.WebContentRegistry.ContentMapping]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents registry for single configured static content mapping.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="eu.akkamo.web.FileFromDirGenerator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FileFromDirGenerator"></a>
+      <a id="FileFromDirGenerator:FileFromDirGenerator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FileFromDirGenerator$.html"><span class="name">FileFromDirGenerator</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package@FileFromDirGenerator" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="eu.akkamo.web.WebContentRegistry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WebContentRegistry"></a>
+      <a id="WebContentRegistry:WebContentRegistry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="WebContentRegistry$.html"><span class="name">WebContentRegistry</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.web.package@WebContentRegistry" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
