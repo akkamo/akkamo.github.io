@@ -58,7 +58,7 @@
     host = <span class="lit">"localhost"</span> <span class="cmt">// host, default localhost</span>
     akkaAlias = <span class="lit">"alias"</span> <span class="cmt">// not required, default is used if exists</span>
     requestLogLevel = <span class="lit">"info"</span>  <span class="cmt">// defines level for request level logging. Default "off" means no logging</span>
-    RequestLogContentLength = <span class="num">1024</span> <span class="cmt">// defines max content length in request log, default 0  to disable content logging</span>
+    requestLogFormat = <span class="lit">"%{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}"</span> <span class="cmt">// defines log format, defaults to this if not specified</span>
   },
   <span class="cmt">// configuration registered as default (only one instance is allowed)</span>
   name2 = {
@@ -289,23 +289,6 @@ before <i>Akkamo</i> system shutdown should be here.</p><div class="fullcomment"
 before <i>Akkamo</i> system shutdown should be here. As an input parameter, <i>Akkamo</i> context is
 provided.
 </p></div><dl class="paramcmts block"><dt class="param">ctx</dt><dd class="cmt"><p><i>Akkamo</i> context</p></dd><dt>returns</dt><dd class="cmt"><p>instance of Res</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.AkkaHttpModule">AkkaHttpModule</a> → <a href="Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a></dd></dl></div>
-    </li><li name="eu.akkamo.AkkaHttpModule#entityAsString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="entityAsString(entity:akka.http.scaladsl.model.HttpEntity)(implicitm:akka.stream.Materializer,implicitex:scala.concurrent.ExecutionContext):scala.concurrent.Future[String]"></a>
-      <a id="entityAsString(HttpEntity)(Materializer,ExecutionContext):Future[String]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">entityAsString</span><span class="params">(<span name="entity">entity: <span class="extype" name="akka.http.scaladsl.model.HttpEntity">HttpEntity</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="m">m: <span class="extype" name="akka.stream.Materializer">Materializer</span></span>, <span name="ex">ex: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#eu.akkamo.AkkaHttpModule@entityAsString(entity:akka.http.scaladsl.model.HttpEntity)(implicitm:akka.stream.Materializer,implicitex:scala.concurrent.ExecutionContext):scala.concurrent.Future[String]" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -453,7 +436,7 @@ class, for example an interface instead of concrete implementation.
     </span>
       <p class="shortcomment cmt">register module mappings
 </p><div class="fullcomment"><div class="comment cmt"><p>register module mappings
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>true if initialization is complete.
+</p></div><dl class="paramcmts block"><dt class="param">ctx</dt><dd class="cmt"><p>Akkamo context</p></dd><dt>returns</dt><dd class="cmt"><p>true if initialization is complete.
         In case of incomplete initialization system will call this method again.
         Incomplete initialization mean That component is not able to find all dependencies.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.AkkaHttpModule">AkkaHttpModule</a> → <a href="Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -474,18 +457,18 @@ class, for example an interface instead of concrete implementation.
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="eu.akkamo.AkkaHttpModule#logRequestResult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="logRequestResult(levelStr:String,contentLength:Int,route:akka.http.scaladsl.server.Route)(implicitm:akka.stream.Materializer,implicitex:scala.concurrent.ExecutionContext):akka.http.scaladsl.server.Route"></a>
-      <a id="logRequestResult(String,Int,Route)(Materializer,ExecutionContext):Route"></a>
+      <a id="logRequestResult(logLevel:String,logFormat:String,route:akka.http.scaladsl.server.Route)(implicitec:scala.concurrent.ExecutionContext):akka.http.scaladsl.server.Route"></a>
+      <a id="logRequestResult(String,String,Route)(ExecutionContext):Route"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">logRequestResult</span><span class="params">(<span name="levelStr">levelStr: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="contentLength">contentLength: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>, <span name="route">route: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="m">m: <span class="extype" name="akka.stream.Materializer">Materializer</span></span>, <span name="ex">ex: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>
+        <span class="name">logRequestResult</span><span class="params">(<span name="logLevel">logLevel: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="logFormat">logFormat: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="route">route: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#eu.akkamo.AkkaHttpModule@logRequestResult(levelStr:String,contentLength:Int,route:akka.http.scaladsl.server.Route)(implicitm:akka.stream.Materializer,implicitex:scala.concurrent.ExecutionContext):akka.http.scaladsl.server.Route" title="Permalink" target="_top">
+      <a href="../../index.html#eu.akkamo.AkkaHttpModule@logRequestResult(logLevel:String,logFormat:String,route:akka.http.scaladsl.server.Route)(implicitec:scala.concurrent.ExecutionContext):akka.http.scaladsl.server.Route" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -583,40 +566,6 @@ after the initialization stage (i.e.</p><div class="fullcomment"><div class="com
 after the initialization stage (i.e. when all modules are initialized). As an input parameter,
 the <i>Akkamo</i> context is given.
 </p></div><dl class="paramcmts block"><dt class="param">ctx</dt><dd class="cmt"><p><i>Akkamo</i> context</p></dd><dt>returns</dt><dd class="cmt"><p>instance of Res that contains (new if modified) instance of <a href="Context.html" class="extype" name="eu.akkamo.Context">eu.akkamo.Context</a> or exception packed in <code><code>Try</code></code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="eu.akkamo.AkkaHttpModule">AkkaHttpModule</a> → <a href="Runnable.html" class="extype" name="eu.akkamo.Runnable">Runnable</a></dd></dl></div>
-    </li><li name="eu.akkamo.AkkaHttpModule#shortData" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="shortData(data:akka.http.scaladsl.model.HttpEntity)(maxLength:Int):String"></a>
-      <a id="shortData(HttpEntity)(Int):String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">shortData</span><span class="params">(<span name="data">data: <span class="extype" name="akka.http.scaladsl.model.HttpEntity">HttpEntity</span></span>)</span><span class="params">(<span name="maxLength">maxLength: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#eu.akkamo.AkkaHttpModule@shortData(data:akka.http.scaladsl.model.HttpEntity)(maxLength:Int):String" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="eu.akkamo.AkkaHttpModule#shortData" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="shortData(data:String)(maxLength:Int):String"></a>
-      <a id="shortData(String)(Int):String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">shortData</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="maxLength">maxLength: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#eu.akkamo.AkkaHttpModule@shortData(data:String)(maxLength:Int):String" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

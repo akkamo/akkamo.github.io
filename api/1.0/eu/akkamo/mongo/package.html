@@ -156,13 +156,15 @@ the <i>Akkamo</i> context and provides API for accessing the connection.</p>
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt"><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><div class="fullcomment"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><h3> Example configuration </h3><pre>akkamo.reactiveMongo {
-
- 	<span class="cmt">// ReactiveMongo loads its configuration from here (e.g. configuration of the</span>
- 	<span class="cmt">// underlying Akka system)</span>
- 	akka {
-   		loglevel = WARNING
- 	}
+      <p class="shortcomment cmt"><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><div class="fullcomment"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><h3> Example configuration </h3><pre>akkamo.reactiveMongoConfig {
+ 	<span class="cmt">// ReactiveMongo loads driver configuration from here (e.g. configuration of the underlying Akka system)</span>
+ 	mongo-async-driver {
+ 	  akka {
+   	  	loglevel = WARNING
+  	}
+  }
+}
+akkamo.reactiveMongo {
   name1 = {
     aliases=[<span class="lit">"alias1"</span>, <span class="lit">"alias2"</span>]
     default = <span class="kw">true</span> <span class="cmt">// required if more than one reactive mongo configuration exists</span>
@@ -177,7 +179,8 @@ one <i>ReactiveMongo</i> connection is created and will be registered into the <
 Each configured connection is registered into the <i>Akkamo</i> context as the
 <a href="ReactiveMongoApi.html" class="extype" name="eu.akkamo.mongo.ReactiveMongoApi">eu.akkamo.mongo.ReactiveMongoApi</a> interface and is avaiable for injection via its name
 (e.g. <i>name1</i>), aliases (if defined, e.g. <i>alias1</i> or <i>alias2</i>), or if defined as
-<i>default</i> without any name identifier.</p><h4>If configuration is missing, then default entry with <code>uri: mongodb://localhost/default</code> is created.</h4></div></div>
+<i>default</i> without any name identifier.</p><h4>If configuration is missing, then default entry with <code>uri: mongodb://localhost/default</code> is created.</h4><p>Remarks:
+</p></div></div>
     </li></ol>
             </div>
 

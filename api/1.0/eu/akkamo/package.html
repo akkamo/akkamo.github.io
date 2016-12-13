@@ -91,7 +91,7 @@
     host = <span class="lit">"localhost"</span> <span class="cmt">// host, default localhost</span>
     akkaAlias = <span class="lit">"alias"</span> <span class="cmt">// not required, default is used if exists</span>
     requestLogLevel = <span class="lit">"info"</span>  <span class="cmt">// defines level for request level logging. Default "off" means no logging</span>
-    RequestLogContentLength = <span class="num">1024</span> <span class="cmt">// defines max content length in request log, default 0  to disable content logging</span>
+    requestLogFormat = <span class="lit">"%{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}"</span> <span class="cmt">// defines log format, defaults to this if not specified</span>
   },
   <span class="cmt">// configuration registered as default (only one instance is allowed)</span>
   name2 = {

@@ -49,13 +49,15 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><h3> Example configuration </h3><pre>akkamo.reactiveMongo {
-
- 	<span class="cmt">// ReactiveMongo loads its configuration from here (e.g. configuration of the</span>
- 	<span class="cmt">// underlying Akka system)</span>
- 	akka {
-   		loglevel = WARNING
- 	}
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p><i>Akkamo module</i> providing support for <i>MongoDB</i> via the <i>ReactiveMongo</i> driver.</p><h3> Example configuration </h3><pre>akkamo.reactiveMongoConfig {
+ 	<span class="cmt">// ReactiveMongo loads driver configuration from here (e.g. configuration of the underlying Akka system)</span>
+ 	mongo-async-driver {
+ 	  akka {
+   	  	loglevel = WARNING
+  	}
+  }
+}
+akkamo.reactiveMongo {
   name1 = {
     aliases=[<span class="lit">"alias1"</span>, <span class="lit">"alias2"</span>]
     default = <span class="kw">true</span> <span class="cmt">// required if more than one reactive mongo configuration exists</span>
@@ -70,7 +72,8 @@ one <i>ReactiveMongo</i> connection is created and will be registered into the <
 Each configured connection is registered into the <i>Akkamo</i> context as the
 <a href="ReactiveMongoApi.html" class="extype" name="eu.akkamo.mongo.ReactiveMongoApi">eu.akkamo.mongo.ReactiveMongoApi</a> interface and is avaiable for injection via its name
 (e.g. <i>name1</i>), aliases (if defined, e.g. <i>alias1</i> or <i>alias2</i>), or if defined as
-<i>default</i> without any name identifier.</p><h4>If configuration is missing, then default entry with <code>uri: mongodb://localhost/default</code> is created.</h4></div><div class="toggleContainer block">
+<i>default</i> without any name identifier.</p><h4>If configuration is missing, then default entry with <code>uri: mongodb://localhost/default</code> is created.</h4><p>Remarks:
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../Disposable.html" class="extype" name="eu.akkamo.Disposable">Disposable</a>, <a href="../Initializable.html" class="extype" name="eu.akkamo.Initializable">Initializable</a>, <a href="../Module.html" class="extype" name="eu.akkamo.Module">Module</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
@@ -223,40 +226,6 @@ Each configured connection is registered into the <i>Akkamo</i> context as the
       </a>
     </span>
       
-    </li><li name="eu.akkamo.mongo.ReactiveMongoModule#ConnectionStartTimeout" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConnectionStartTimeout:scala.concurrent.duration.FiniteDuration"></a>
-      <a id="ConnectionStartTimeout:FiniteDuration"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ConnectionStartTimeout</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.mongo.ReactiveMongoModule@ConnectionStartTimeout:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="eu.akkamo.mongo.ReactiveMongoModule#ConnectionStopTimeout" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConnectionStopTimeout:scala.concurrent.duration.FiniteDuration"></a>
-      <a id="ConnectionStopTimeout:FiniteDuration"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ConnectionStopTimeout</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#eu.akkamo.mongo.ReactiveMongoModule@ConnectionStopTimeout:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="eu.akkamo.mongo.ReactiveMongoModule#DefaultKey" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DefaultKey:String"></a>
       <a id="DefaultKey:String"></a>
@@ -270,6 +239,23 @@ Each configured connection is registered into the <i>Akkamo</i> context as the
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#eu.akkamo.mongo.ReactiveMongoModule@DefaultKey:String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="eu.akkamo.mongo.ReactiveMongoModule#MongoDriverKey" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MongoDriverKey:String"></a>
+      <a id="MongoDriverKey:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">MongoDriverKey</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#eu.akkamo.mongo.ReactiveMongoModule@MongoDriverKey:String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
