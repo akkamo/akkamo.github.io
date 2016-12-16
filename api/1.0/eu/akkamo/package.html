@@ -90,8 +90,9 @@
     protocol = <span class="lit">"http"</span> <span class="cmt">// http, https, ...</span>
     host = <span class="lit">"localhost"</span> <span class="cmt">// host, default localhost</span>
     akkaAlias = <span class="lit">"alias"</span> <span class="cmt">// not required, default is used if exists</span>
-    requestLogLevel = <span class="lit">"info"</span>  <span class="cmt">// defines level for request level logging. Default "off" means no logging</span>
-    requestLogFormat = <span class="lit">"%{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}"</span> <span class="cmt">// defines log format, defaults to this if not specified</span>
+    requestLogLevel = <span class="lit">"INFO"</span>  <span class="cmt">// defines level for request level logging. Default "off" means no logging</span>
+    useMDC = <span class="kw">false</span> <span class="cmt">// defines usage of logger than support custom MDC, in this case headers mapped  in to MDC</span>
+    requestLogFormat = <span class="lit">"%1s %2s: HTTP/%3s headers:%4s"</span> <span class="cmt">// defines log format, defaults to this if not specified</span>
   },
   <span class="cmt">// configuration registered as default (only one instance is allowed)</span>
   name2 = {
@@ -102,7 +103,8 @@
 the <code>akkamo.akkaHttp</code>, instance of <a href="RouteRegistry.html" class="extype" name="eu.akkamo.RouteRegistry">RouteRegistry</a> is registered to the <i>Akkamo</i> context
 both using its name (e.g. <i>name1</i>) and aliases (e.g. <i>alias1</i>) if provided. Injected
 instance of <a href="RouteRegistry.html" class="extype" name="eu.akkamo.RouteRegistry">RouteRegistry</a> can be then used to register own Akka HTTP routes.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p>http://doc.akka.io/docs/akka/current/scala/http/</p></span><span class="cmt"><p>RouteRegistry</p></span></dd></dl></div>
+<br/>
+log format:</p><ul><li>method</li><li>relative uri</li><li>status</li><li>headers (only if use MDC is false)</li></ul></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p>http://doc.akka.io/docs/akka/current/scala/http/</p></span><span class="cmt"><p>RouteRegistry</p></span></dd></dl></div>
     </li><li name="eu.akkamo.AkkaModule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AkkaModuleextendsModulewithInitializablewithDisposable"></a>
       <a id="AkkaModule:AkkaModule"></a>

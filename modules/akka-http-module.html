@@ -442,8 +442,10 @@ injection as <em>default</em> (Please note that only one configured connection c
 <a href="akka-module.html">Akka module</a>, if not defined, <em>default</em> registered actor system will be used</li>
 <li><code>requestLogLevel</code> <em>(optional)</em> - defined log level for request level logging, default <code>off</code> means
 no logging</li>
+<li><code>useMDC</code> - <em>(optional)</em> - <code>true/false</code> (default false) defines usage of logger than support custom 
+<a href="http://logback.qos.ch/manual/mdc.html" target="_blank">MDC</a>, in this case headers are mapped in to MDC     </li>
 <li><code>requestLogFormat</code> <em>(optional)</em> - defined log format, defaults to
-<code>%{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}</code> if no custom format defined</li>
+ &quot;%1s %2s: HTTP/%3s headers:%4s&quot; or &quot;%1s %2s: HTTP/%3s&quot; (if useMDC=true) if no custom format defined</li>
 </ul>
 <p>Example of fully working configuration is shown below:</p>
 <pre><code>akkamo.akkaHttp = {
@@ -463,19 +465,17 @@ no logging</li>
 <p>If the request logging is enabled (using the <code>requestLogLever</code> option set to other than <code>off</code>),
 custom log format can be specified using own log string with parameters placeholders, that are
 automatically replaced by actual values. Example of such log string is shown below:</p>
-<pre><code>%{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}
+<pre><code>&quot;%1s %2s: HTTP/%3s headers:%4s&quot;
 </code></pre><p>Each parameter is enclosed between the <code>%{</code> and <code>}</code> strings, e.g. <code>%{PARAM_NAME}</code>. Recommended param
 name style is uppercase with words separated using underscore.</p>
 <p>At this moment, following parameters are available for use:</p>
-<ul>
-<li><code>${HTTP_METHOD}</code> - is replaced with the actual request HTTP method (e.g. <code>POST</code>)</li>
-<li><code>${REQ_URI}</code> - is replaced with the actual request URI (e.g. <code>http://localhost/foo/bar</code>)</li>
-<li><code>${RESP_STATUS}</code> - is replaced with the actual response status (e.g. <code>403 Forbidden</code>)</li>
-</ul>
-<p>If unknown parameter name is used (e.g. accidentally misspelled), warning message will be logged in
-following format:</p>
-<pre><code>Invalid param &apos;FOO&apos; in source string &apos;%{FOO} %{HTTP_METHOD} %{REQ_URI}: HTTP/%{RESP_STATUS}&apos;
-</code></pre><h2 id="how-to-use-in-your-module">How to use in your module</h2>
+<ol>
+<li>is replaced with the actual request HTTP method (e.g. <code>POST</code>)</li>
+<li>is replaced with the actual request reklative uri URI</li>
+<li>is replaced with the actual response status (e.g. <code>403 Forbidden</code>)</li>
+<li>is replaced with list of headers (only if useMDC=false)</li>
+</ol>
+<h2 id="how-to-use-in-your-module">How to use in your module</h2>
 <p>Each configured connection registers into the <em>Akkamo context</em> instance of <code>RouteRegistry</code>,
 inside which single <em>routes</em> for such connection are registered. For more info about
 <em>Akka HTTP</em> routes, see
@@ -561,7 +561,7 @@ the sample configuration above.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Akka HTTP module","level":"1.4.2","depth":2,"next":{"title":"Config module","level":"1.4.3","depth":2,"path":"modules/config-module.md","ref":"modules/config-module.md","articles":[]},"previous":{"title":"Akka module","level":"1.4.1","depth":2,"path":"modules/akka-module.md","ref":"modules/akka-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/akka-http-module.md","mtime":"2016-11-14T12:44:27.103Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-12-13T12:52:49.619Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Akka HTTP module","level":"1.4.2","depth":2,"next":{"title":"Config module","level":"1.4.3","depth":2,"path":"modules/config-module.md","ref":"modules/config-module.md","articles":[]},"previous":{"title":"Akka module","level":"1.4.1","depth":2,"path":"modules/akka-module.md","ref":"modules/akka-module.md","articles":[]},"dir":"ltr"},"config":{"plugins":["emphasize","richquotes","puml"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"emphasize":{},"puml":{},"search":{},"lunr":{"maxIndexSize":1000000},"fontsettings":{"theme":"white","family":"sans","size":2},"richquotes":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"en","gitbook":"*"},"file":{"path":"modules/akka-http-module.md","mtime":"2016-12-16T06:57:54.644Z","type":"markdown"},"gitbook":{"version":"3.1.1","time":"2016-12-16T08:10:14.038Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
